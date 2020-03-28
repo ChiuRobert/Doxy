@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS "language" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"name"	TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "dialect" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"name"	TEXT NOT NULL,
+	"language"	INTEGER NOT NULL,
+	FOREIGN KEY("language") REFERENCES "language"("id")
+);
+
+CREATE TABLE IF NOT EXISTS "baseword" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"word"	TEXT NOT NULL,
+	"dialect"	INTEGER NOT NULL,
+	FOREIGN KEY("dialect") REFERENCES "dialect"("id")
+);
+
+CREATE TABLE IF NOT EXISTS "dictionary" (
+	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"baseWord"	INTEGER NOT NULL,
+	"translatedWord"	INTEGER NOT NULL,
+	FOREIGN KEY("baseWord") REFERENCES "baseword"("id"),
+	FOREIGN KEY("translatedWord") REFERENCES "baseword"("id")
+);
