@@ -1,8 +1,13 @@
-﻿using Doxy.Entities;
+﻿using Entities;
 
-namespace Doxy.Repositories
+namespace Repositories
 {
-    interface IBaseWordRepository : IRepository<BaseWord>
+    internal interface IBaseWordRepository : IRepository
     {
+        void Persist(BaseWord entity);
+
+        void Merge(BaseWord entity);
+
+        void Delete(BaseWord entity);
     }
 }

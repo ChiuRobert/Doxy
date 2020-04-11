@@ -1,14 +1,18 @@
 ﻿using System.IO;
 using System.Text;
+using SbLogger;
+using SbLogger.Levels;
 using UnityEngine;
 
-namespace Doxy.Utils
+namespace Utils
 {
     /// <summary>
     /// Contains services regarding file manipulation
     /// </summary>
     public static class FileService
     {
+        private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(FileService), GetLogPath());
+
         /// <summary>
         /// Parse the given file
         /// </summary>
@@ -16,11 +20,14 @@ namespace Doxy.Utils
         /// <returns>a StringBuilder containing file's content</returns>
         public static StringBuilder ParseFile(string filePath)
         {
+            LOGGER.Log(Level.FINE, "Starting to parse file", new Param { Name = nameof(filePath), Value = filePath });
+
             StringBuilder parser = new StringBuilder();
 
             if (!File.Exists(filePath))
             {
-                WriteLog("File doesn't exist " + filePath);
+                LOGGER.Log(Level.SEVERE, "File doesn't exist", new Param { Name = nameof(filePath), Value = filePath });
+
                 return parser;
             }
 
@@ -35,21 +42,9 @@ namespace Doxy.Utils
                 parser.Append(line);
             }
 
+            LOGGER.Log(Level.FINE, "Finished parsing the file", new Param { Name = nameof(filePath), Value = filePath });
+
             return parser;
-        }
-
-        /// <summary>
-        /// Write the message to a log file
-        /// </summary>
-        /// <param name="message">message to be written</param>
-        public static void WriteLog(string message)
-        {
-            string path = CreateFullPath(Const.LOG_FILE_NAME);
-
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                sw.WriteLine(message);
-            }
         }
 
         /// <summary>
@@ -70,6 +65,16 @@ namespace Doxy.Utils
 #endif
 
             return path;
+        }
+
+        /// <summary>
+        /// Returns the file path of the log taking into consideration the platform
+        /// </summary>
+        /// <returns>A string containing the full path</returns>
+        /// <see cref="CreateFullPath(string)"/>
+        public static string GetLogPath()
+        {
+            return CreateFullPath(Const.LOG_FILE_NAME);
         }
     }
 }

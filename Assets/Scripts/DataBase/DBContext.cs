@@ -1,30 +1,34 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Mono.Data.Sqlite;
-using System;
-using Doxy.Utils;
-using Doxy.Entities;
+using SbLogger;
+using SbLogger.Levels;
+using Utils;
 
-namespace Doxy.DataBase
+namespace DataBase
 {
     /// <summary>
     /// Manipulates the database connection
     /// </summary>
-    public class DBContext
+    public class DbContext
     {
-        private static DBContext instance;
+        private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(DbContext), FileService.GetLogPath());
+
+        private static DbContext instance;
 
         private IDbConnection dbConnection;
         private IDbCommand dbCommand;
+        private IDataReader reader;
 
-        private DBContext() { }
+        private DbContext() { }
 
-        public static DBContext INSTANCE
+        public static DbContext INSTANCE
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new DBContext();
+                    instance = new DbContext();
                 }
 
                 return instance;
@@ -39,6 +43,8 @@ namespace Doxy.DataBase
             // Create database
             string connection = "URI=file:" + FileService.CreateFullPath(Const.DATABASE_NAME);
 
+            LOGGER.Log(Level.CONFIG, "Create database", new Param {Name = nameof(connection), Value = connection});
+
             // Open connection
             try
             {
@@ -47,14 +53,41 @@ namespace Doxy.DataBase
             }
             catch (Exception e)
             {
-                FileService.WriteLog("Error opening a database connection " + e.Message);
+                LOGGER.Log(Level.SEVERE, "Error opening a database connection", e);
             }
+
+            LOGGER.Log(Level.CONFIG, "Connection to database established");
 
             // Create tables
             CreateTables();
 
             // Close connection
             dbConnection.Close();
+
+            LOGGER.Log(Level.CONFIG, "Connection closed");
+        }
+
+        /// <summary>
+        /// Executes the given command in the DB
+        /// </summary>
+        /// <param name="command">The command to be executed</param>
+        public IDataReader ExecuteCommand(string command)
+        {
+            dbCommand = dbConnection.CreateCommand();
+
+            try
+            {
+                dbCommand.CommandText = command;
+                reader = dbCommand.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                LOGGER.Log(Level.SEVERE, "Error executing command", e);
+            }
+
+            LOGGER.Log(Level.CONFIG, "Command executed", new Param {Name = nameof(command), Value = command});
+
+            return reader;
         }
 
         /// <summary>
@@ -72,13 +105,10 @@ namespace Doxy.DataBase
             }
             catch (Exception e)
             {
-                FileService.WriteLog("Error creating tables " + e.Message);
+                LOGGER.Log(Level.SEVERE, "Error creating tables", e);
             }
-        }
 
-        public void Persist(IModel entity)
-        {
-
+            LOGGER.Log(Level.CONFIG, "Tables created");
         }
     }
 }

@@ -1,14 +1,19 @@
 ﻿using System;
 
-namespace Doxy.Entities
+namespace Entities
 {
     [Serializable]
     public class Dictionary : IModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public BaseWord BaseWord { get; set; }
 
         public BaseWord TranslatedWord { get; set; }
+        
+        public override string ToString()
+        {
+            return "Dictionary [ id = " + Id + ", baseWord = " + BaseWord + ", translatedWord = " + TranslatedWord + " ]";
+        }
     }
 }

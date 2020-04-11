@@ -1,7 +1,7 @@
-﻿namespace Doxy.Entities
+﻿namespace Entities
 {
     public interface IModel
     {
-        int ID { get; set; }
+        int Id { get; set; }
     }
 }

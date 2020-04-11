@@ -1,8 +1,13 @@
-﻿using Doxy.Entities;
+﻿using Entities;
 
-namespace Doxy.Repositories
+namespace Repositories
 {
-    interface IDictionaryRepository : IRepository<Dictionary>
+    internal interface IDictionaryRepository : IRepository
     {
+        void Persist(Dictionary entity);
+
+        void Merge(Dictionary entity);
+
+        void Delete(Dictionary entity);
     }
 }

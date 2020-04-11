@@ -1,10 +1,12 @@
-﻿using Doxy.DataBase;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DBTrigger : MonoBehaviour
+namespace DataBase
 {
-    private void Start()
+    public class DbTrigger : MonoBehaviour
     {
-        DBContext.INSTANCE.Initialize();
+        private void Start()
+        {
+            DbContext.INSTANCE.Initialize();
+        }
     }
 }

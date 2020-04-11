@@ -1,8 +1,15 @@
-﻿using Doxy.Entities;
+﻿using Entities;
 
-namespace Doxy.Repositories
+namespace Repositories
 {
-    interface IDialectRepository : IRepository<Dialect>
+    internal interface IDialectRepository : IRepository
     {
+        Dialect GetById(int id);
+        
+        void Persist(Dialect entity);
+
+        void Merge(Dialect entity);
+
+        void Delete(Dialect entity);
     }
 }

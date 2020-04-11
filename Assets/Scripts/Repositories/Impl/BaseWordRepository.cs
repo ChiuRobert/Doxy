@@ -1,15 +1,19 @@
-﻿using Doxy.Entities;
+﻿using Entities;
+using SbLogger;
+using Utils;
 
-namespace Doxy.Repositories.Impl
+namespace Repositories.Impl
 {
-    class BaseWordRepository : IBaseWordRepository
+    internal class BaseWordRepository : IBaseWordRepository
     {
+        private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(BaseWordRepository), FileService.GetLogPath());
+
         public void Delete(BaseWord entity)
         {
             throw new System.NotImplementedException();
         }
 
-        public BaseWord Merge(BaseWord entity)
+        public void Merge(BaseWord entity)
         {
             throw new System.NotImplementedException();
         }

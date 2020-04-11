@@ -1,13 +1,8 @@
-﻿using Doxy.Entities;
+﻿using Entities;
 
-namespace Doxy.Repositories
+namespace Repositories
 {
-    interface IRepository<T> where T : IModel
+    internal interface IRepository
     {
-        void Persist(T entity);
-
-        T Merge(T entity);
-
-        void Delete(T entity);
     }
 }
