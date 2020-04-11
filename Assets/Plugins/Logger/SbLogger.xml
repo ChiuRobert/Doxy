@@ -1,0 +1,403 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SbLogger</name>
+    </assembly>
+    <members>
+        <member name="T:SbLogger.ConcreteSLogger">
+            <summary>
+            Concrete implementation of a SLogger
+            By default it will implement a FileHandler and a LevelFilter
+            </summary>
+        </member>
+        <member name="M:SbLogger.ConcreteSLogger.#ctor(System.String,System.String)">
+            <summary>
+            Construct a concrete logger with the given name.
+            Initialize a FileHandler and a LevelFilter
+            </summary>
+            <param name="name">Logger name</param>
+            <param name="path">The path where the log will be created</param>
+        </member>
+        <member name="T:SbLogger.Utils.Extensions">
+            <summary>
+            Extension class
+            </summary>
+        </member>
+        <member name="M:SbLogger.Utils.Extensions.ToStringLog(SbLogger.Param[])">
+            <summary>
+            Custom formatting for Param array
+            </summary>
+            <param name="array">Array of logging objects</param>
+            <returns>Formatted string</returns>
+        </member>
+        <member name="T:SbLogger.Utils.Consts">
+            <summary>
+            Class that contains all the constants
+            </summary>
+        </member>
+        <member name="F:SbLogger.Utils.Consts.FILE_PATH">
+            <summary>
+            Represents the default path for the FileHandler.
+            </summary>
+        </member>
+        <member name="T:SbLogger.Filter.IFilter">
+            <summary>
+            A Filter can be used to provide fine grain control over what is logged, beyond the control provided by log levels.
+            Each Logger and each Handler can have a filter associated with it. The Logger or Handler will call the IsLoggable method to check if a given LogRecord should be written.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Filter.IFilter.IsLoggable(SbLogger.LogRecord)">
+            <summary>
+            Check if the log record should be written.
+            </summary>
+            <param name="log">The LogRecord to be filtered</param>
+            <returns>true if the level will be logged, false otherwise</returns>
+        </member>
+        <member name="T:SbLogger.Filter.LevelFilter">
+            <summary>
+            Concrete filter that writes only the logs that passes a certain level threshold.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Filter.LevelFilter.Level">
+            <summary>
+            The logging message level, for example Level.SEVERE.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Filter.LevelFilter.#ctor(SbLogger.Levels.Level)">
+            <summary>
+            Construct a LevelFilter the given level as a threshold
+            </summary>
+            <param name="level">The threshold level</param>
+        </member>
+        <member name="M:SbLogger.Filter.LevelFilter.#ctor">
+            <summary>
+            Empty constructor.
+            By default the level is Level.ALL
+            </summary>
+        </member>
+        <member name="M:SbLogger.Filter.LevelFilter.IsLoggable(SbLogger.LogRecord)">
+            <summary>
+            Check if the log record should be written.
+            </summary>
+            <param name="log">The LogRecord to be filtered</param>
+            <returns>true if the level will be logged, false otherwise</returns>
+        </member>
+        <member name="T:SbLogger.Format.DefaultFormatter">
+            <summary>
+            Default formatter
+            Format: [dd-MM-yyyy HH:mm:ss] Level - ClassName(LineNumber):MethodName - Message
+            </summary>
+        </member>
+        <member name="M:SbLogger.Format.DefaultFormatter.Format(SbLogger.LogRecord)">
+            <summary>
+            Format the given log record and return the formatted string.
+            </summary>
+            <param name="record">The log record to be formatted.</param>
+            <returns>The formatted log record.</returns>
+        </member>
+        <member name="T:SbLogger.Format.Formatter">
+            <summary>
+            A Formatter provides support for formatting LogRecords.
+            Typically each logging Handler will have a Formatter associated with it. The Formatter takes a LogRecord and converts it to a string.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Format.Formatter.#ctor">
+            <summary>
+            Construct a new formatter.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Format.Formatter.Format(SbLogger.LogRecord)">
+            <summary>
+            Format the given log record and return the formatted string.
+            </summary>
+            <param name="record">The log record to be formatted.</param>
+            <returns>The formatted log record.</returns>
+        </member>
+        <member name="T:SbLogger.Handlers.FileHandler">
+            <summary>
+            A Handler subclass.
+            Writes the log to a file.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Handlers.FileHandler.FilePath">
+            <summary>
+            Path to save the log.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Handlers.FileHandler.#ctor">
+            <summary>
+            Default constructor.
+            It initializes a LevelFilter and a DefaultFormatter
+            </summary>
+        </member>
+        <member name="M:SbLogger.Handlers.FileHandler.#ctor(System.String)">
+            <summary>
+            Construct a FileHandler with a custom path
+            </summary>
+            <param name="path">The path where the log will be created</param>
+        </member>
+        <member name="M:SbLogger.Handlers.FileHandler.#ctor(SbLogger.Filter.IFilter,SbLogger.Format.Formatter)">
+            <summary>
+            Construct a FileHandler given the specific Filter and the Formatter
+            </summary>
+            <param name="filter">Log filter</param>
+            <param name="formatter">Log formatter</param>
+        </member>
+        <member name="M:SbLogger.Handlers.FileHandler.Write(SbLogger.LogRecord)">
+            <summary>
+            Writes a LogRecord to the file.
+            </summary>
+            <param name="record">Description of the log event</param>
+        </member>
+        <member name="M:SbLogger.Handlers.FileHandler.DefaultPath(System.String)">
+            <summary>
+            Sets the default path
+            </summary>
+        </member>
+        <member name="T:SbLogger.Handlers.Handler">
+            <summary>
+            A Handler object takes log messages from a Logger and exports them.
+            It might for example, write them to a console or write them to a file.
+            A Handler can be disabled by doing a setLevel(Level.OFF) and can be re-enabled by doing a setLevel with an appropriate level.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Handlers.Handler.Filter">
+            <summary>
+            The current Filter for this Handler.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Handlers.Handler.Formatter">
+            <summary>
+            The current Formatter for this Handler.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Handlers.Handler.Write(SbLogger.LogRecord)">
+            <summary>
+            Writes a LogRecord.
+            The logging request was made initially to a Logger object, which initialized the LogRecord and forwarded it here.
+            The Handler is responsible for formatting the message, when and if necessary.
+            </summary>
+            <param name="record">Description of the log event</param>
+        </member>
+        <member name="T:SbLogger.Levels.Level">
+            <summary>
+            The Level class defines a set of standard logging levels that can be used to control logging output. 
+            The logging Level objects are ordered and are specified by ordered integers. 
+            Enabling logging at a given level also enables logging at all higher levels.
+            The levels in descending order are:
+            SEVERE (highest value)
+            WARNING
+            INFO
+            CONFIG
+            FINE (lowest value)
+            In addition there is a level OFF that can be used to turn off logging, and a level ALL that can be used to enable logging of all messages.
+            It is possible for third parties to define additional logging levels by subclassing Level.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.ALL">
+            <summary>
+            ALL indicates that all messages should be logged.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.SEVERE">
+            <summary>
+            SEVERE is a message level indicating a serious failure.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.WARNING">
+            <summary>
+            WARNING is a message level indicating a potential problem.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.INFO">
+            <summary>
+            INFO is a message level for informational messages.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.CONFIG">
+            <summary>
+            CONFIG is a message level for static configuration messages.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.FINE">
+            <summary>
+            FINE is a message level providing tracing information.
+            </summary>
+        </member>
+        <member name="F:SbLogger.Levels.Level.OFF">
+            <summary>
+            OFF is a special level that can be used to turn off logging.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Levels.Level.Value">
+            <summary>
+            The value for the level.
+            </summary>
+        </member>
+        <member name="P:SbLogger.Levels.Level.Name">
+            <summary>
+            The name of the level.
+            </summary>
+        </member>
+        <member name="M:SbLogger.Levels.Level.#ctor(System.String,System.Int32)">
+            <summary>
+            Create a named Level with a given integer value and a given name.
+            </summary>
+            <param name="name">The name of the Level, for example "SEVERE".</param>
+            <param name="value">An integer value for the level.</param>
+        </member>
+        <member name="M:SbLogger.Levels.Level.ToString">
+            <summary>
+            Returns a string representation of this Level.
+            </summary>
+            <returns>The non-localized name of the Level, for example "INFO".</returns>
+        </member>
+        <member name="T:SbLogger.Param">
+            <summary>
+            Message parameters
+            </summary>
+        </member>
+        <member name="T:SbLogger.LogRecord">
+            <summary>
+            LogRecord objects are used to pass logging requests between the logging framework and individual log Handlers.
+            The LogRecord class is serializable.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.ClassName">
+            <summary>
+            The name of the class that issued the logging request.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.MethodName">
+            <summary>
+            The name of the method in which the logging request was issued.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.LineNumber">
+            <summary>
+            The line number.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.Message">
+            <summary>
+            The "raw" log message, before localization or formatting.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.ExceptionMessage">
+            <summary>
+            The exception associated with the log record.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.Objs">
+            <summary>
+            Array of parameters to the message
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.Time">
+            <summary>
+            The event time.
+            </summary>
+        </member>
+        <member name="P:SbLogger.LogRecord.Level">
+            <summary>
+            The logging message level, for example Level.SEVERE.
+            </summary>
+        </member>
+        <member name="M:SbLogger.LogRecord.#ctor">
+            <summary>
+            Default empty constructor
+            </summary>
+        </member>
+        <member name="T:SbLogger.SLogger">
+            <summary>
+            A Logger object is used to log messages for a specific system or application component. 
+            Logging messages will be forwarded to registered Handler objects, which can forward the messages to a variety of destinations, including consoles, files, OS logs, etc.
+            Each Logger has a Level associated with it. This reflects a minimum Level that this logger cares about.
+            </summary>
+        </member>
+        <member name="P:SbLogger.SLogger.Name">
+            <summary>
+            Current name of the logger.
+            </summary>
+        </member>
+        <member name="P:SbLogger.SLogger.Handler">
+            <summary>
+            Current Handler associated with this logger.
+            </summary>
+        </member>
+        <member name="P:SbLogger.SLogger.Filter">
+            <summary>
+            Current Filter associated with this logger.
+            </summary>
+        </member>
+        <member name="M:SbLogger.SLogger.GetLogger(System.String)">
+            <summary>
+            Create a logger for a named subsystem.
+            </summary>
+            <param name="name">Logger name</param>
+            <returns>SLogger</returns>
+        </member>
+        <member name="M:SbLogger.SLogger.GetLogger(System.String,System.String)">
+            <summary>
+            Create a logger for a named subsystem.
+            </summary>
+            <param name="name">Logger name</param>
+            <param name="path">The path where the log will be created</param>
+            <returns>SLogger</returns>
+        </member>
+        <member name="M:SbLogger.SLogger.#ctor(System.String)">
+            <summary>
+            Constructor used by subclasses.
+            </summary>
+            <param name="name">Logger name</param>
+        </member>
+        <member name="M:SbLogger.SLogger.GetLevel">
+            <summary>
+            Get the log Level that has been specified for this Logger.
+            </summary>
+            <returns>Level</returns>
+        </member>
+        <member name="M:SbLogger.SLogger.IsLoggable(SbLogger.Levels.Level)">
+            <summary>
+            Check if a message of the given level would actually be logged by this logger.
+            </summary>
+            <param name="level">The level to test</param>
+            <returns>true if the level will be logged, false otherwise</returns>
+        </member>
+        <member name="M:SbLogger.SLogger.Log(SbLogger.LogRecord)">
+            <summary>
+            Log a LogRecord.
+            </summary>
+            <param name="record">The LogRecord to be written</param>
+        </member>
+        <member name="M:SbLogger.SLogger.Log(SbLogger.Levels.Level,System.String)">
+            <summary>
+            Log a message, with no arguments.
+            </summary>
+            <param name="level">One of the message level identifiers, e.g., SEVERE</param>
+            <param name="message">The string message</param>
+        </member>
+        <member name="M:SbLogger.SLogger.Log(SbLogger.Levels.Level,System.String,SbLogger.Param[])">
+            <summary>
+            Log a message, with an array of object arguments.
+            </summary>
+            <param name="level">One of the message level identifiers, e.g., SEVERE</param>
+            <param name="message">The string message</param>
+            <param name="objs">Array of parameters to the message</param>
+        </member>
+        <member name="M:SbLogger.SLogger.Log(SbLogger.Levels.Level,System.String,System.Exception)">
+            <summary>
+            Log a message, with associated Exception information.
+            </summary>
+            <param name="level">One of the message level identifiers, e.g., SEVERE</param>
+            <param name="message">The string message</param>
+            <param name="e">Exception associated with log message</param>
+        </member>
+        <member name="M:SbLogger.SLogger.Write(SbLogger.LogRecord)">
+            <summary>
+            Passes the log to the Handler if it passes the Log Filter
+            </summary>
+            <param name="record">The LogRecord to be written</param>
+        </member>
+    </members>
+</doc>
