@@ -12,8 +12,13 @@ namespace Repositories.Impl
     {
         private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(DialectRepository), FileService.GetLogPath());
 
-        private readonly ILanguageRepository languageRepository = RepositoryFactory.GetRepository<ILanguageRepository>();
-        
+        [UseProperty]
+        private ILanguageRepository languageRepository;
+
+        private ILanguageRepository LanguageRepository =>
+            languageRepository ??
+            (languageRepository = RepositoryFactory.GetRepository<ILanguageRepository>());
+
         public Dialect GetById(int id)
         {
             Dialect result = null;
@@ -30,10 +35,11 @@ namespace Repositories.Impl
                 {
                     Id = reader.GetInt32(0),
                     Name = reader.GetString(1),
-                    Language = languageRepository.GetById(reader.GetInt32(2))
+                    Language = LanguageRepository.GetById(reader.GetInt32(2))
                 };
             }
 
+            //TODO: Create a DB level for the logger for an easier filtering
             LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
             
             return result;
@@ -41,8 +47,6 @@ namespace Repositories.Impl
         
         public void Persist(Dialect entity)
         {
-            //TODO: check for possible nulls (e.g. line 49)
-            
             string persistEntity = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Insert().
                 Column(Const.DIALECT_NAME).Column(Const.DIALECT_LANGUAGE).
                 Values().
