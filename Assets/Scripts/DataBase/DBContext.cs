@@ -42,8 +42,8 @@ namespace DataBase
         {
             // Create database
             string connection = "URI=file:" + FileService.CreateFullPath(Const.DATABASE_NAME);
-
-            LOGGER.Log(Level.CONFIG, "Create database", new Param {Name = nameof(connection), Value = connection});
+            
+            LOGGER.Log(Level.CONFIG, "Connecting to database", new Param {Name = nameof(connection), Value = connection});
 
             // Open connection
             try
@@ -62,9 +62,10 @@ namespace DataBase
             CreateTables();
 
             // Close connection
-            dbConnection.Close();
+            //dbConnection.Close();
 
-            LOGGER.Log(Level.CONFIG, "Connection closed");
+            //LOGGER.Log(Level.CONFIG, "Connection closed");
+            LOGGER.Log(Level.CONFIG, "Game initialized\n");
         }
 
         /// <summary>

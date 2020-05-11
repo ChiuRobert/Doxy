@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using DataBase;
 using Entities;
 using SbLogger;
@@ -32,8 +33,27 @@ namespace Repositories.Impl
             return result;
         }
 
+        public List<Language> GetAll()
+        {
+            List<Language> languages = new List<Language>();
+            string selectAll = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Select().Execute();
+
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectAll);
+
+            while (reader.Read())
+            {
+                languages.Add(new Language() { Id = reader.GetInt32(0), Name = reader.GetString(1)});
+            }
+            
+            LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(languages), Value = string.Join( "\n", languages)});
+
+            return languages;
+        }
+
         public void Persist(Language entity)
         {
+            LOGGER.Log(Level.INFO, "Creating language", new Param {Name = nameof(entity), Value = entity});
+            
             string insertEntity = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Insert().
                 Column(Const.LANGUAGE_NAME).
                 Values().
@@ -45,6 +65,8 @@ namespace Repositories.Impl
 
         public void Merge(Language entity)
         {
+            LOGGER.Log(Level.INFO, "Updating language", new Param {Name = nameof(entity), Value = entity});
+            
             string updateEntity = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Update().
                 Column(Const.LANGUAGE_NAME).Value(entity.Name).
                 Where().
@@ -56,6 +78,8 @@ namespace Repositories.Impl
 
         public void Delete(Language entity)
         {
+            LOGGER.Log(Level.INFO, "Deleting language", new Param {Name = nameof(entity), Value = entity});
+            
             string deleteEntity = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Delete().
                 Where().
                 Column(Const.ID).Equal().Value(entity.Id).

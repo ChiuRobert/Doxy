@@ -4,6 +4,8 @@
     {
         #region Folders
 
+        public static string STREAMING_ASSETS;
+        
         private const string SQL_FOLDER = "SQL/";
         private const string LOGS_FOLDER = "Logs/";
 

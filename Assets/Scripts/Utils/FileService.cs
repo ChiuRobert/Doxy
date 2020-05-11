@@ -2,7 +2,6 @@
 using System.Text;
 using SbLogger;
 using SbLogger.Levels;
-using UnityEngine;
 
 namespace Utils
 {
@@ -54,17 +53,7 @@ namespace Utils
         /// <returns>A string containing the full path</returns>
         public static string CreateFullPath(string name)
         {
-            string path;
-
-#if UNITY_ANDROID
-            path = "jar:file://" + Application.dataPath + "!/assets/" + name;
-#endif
-
-#if UNITY_EDITOR
-            path = Application.dataPath + "/StreamingAssets/" + name;
-#endif
-
-            return path;
+            return Const.STREAMING_ASSETS + name;
         }
 
         /// <summary>
