@@ -7,12 +7,15 @@ namespace DataBase
 {
     public class DbTrigger : MonoBehaviour
     {
+        [Inject]
         private static SLogger LOGGER;
-        
+
         private void Awake()
         {
             SetCrossPlatformPath();
             DbContext.INSTANCE.Initialize();
+            
+            Injector.Initialize();
         }
 
         private static void SetCrossPlatformPath()

@@ -10,7 +10,7 @@ namespace Repositories.Impl
 
         public static T GetRepository<T>() where T : IRepository
         {
-            LOGGER.Log(Level.INFO, "Creating repository", new Param {Name = nameof(T), Value = typeof(T)});
+            LOGGER.Log(Level.INFO, "[2]Creating repository", new Param {Name = nameof(T), Value = typeof(T)});
             
             T result = default(T);
 
