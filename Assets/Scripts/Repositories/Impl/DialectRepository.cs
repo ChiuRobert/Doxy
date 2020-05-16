@@ -29,19 +29,25 @@ namespace Repositories.Impl
 
             IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
 
-            while (reader.Read())
+            if (reader != null)
             {
-                result = new Dialect()
+                while (reader.Read())
                 {
-                    Id = reader.GetInt32(0),
-                    Name = reader.GetString(1),
-                    Language = LanguageRepository.GetById(reader.GetInt32(2))
-                };
+                    result = new Dialect()
+                    {
+                        Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        Language = LanguageRepository.GetById(reader.GetInt32(2))
+                    };
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
+            }
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
             }
 
-            //TODO: Create a DB level for the logger for an easier filtering
-            LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
-            
             return result;
         }
         

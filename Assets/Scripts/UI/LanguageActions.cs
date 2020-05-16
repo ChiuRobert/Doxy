@@ -27,7 +27,7 @@ namespace UI
         {
             LOGGER.Log(Level.INFO, "[1]LanguageActions initialized");
 
-            languages = languageService.GetAllLanguages();
+            RefreshLanguages();
             PopulateLanguages();
 
             languagesDropdown.onValueChanged.AddListener(delegate { SelectedLanguage(); });
@@ -38,13 +38,35 @@ namespace UI
             LOGGER.Log(Level.FINE, "Deleting language", new Param {Name = nameof(selectedLanguage), Value = selectedLanguage});
             
             languageService.DeleteLanguage(selectedLanguage);
+
+            Dropdown.OptionData optionData = languagesDropdown.options.Find(x => string.Equals(x.text, selectedLanguage.Name));
+            languagesDropdown.options.Remove(optionData);
+            
+            RefreshLanguages();
         }
         
         public void SaveLanguage() 
         {
-            LOGGER.Log(Level.FINE, "Saving language", new Param {Name = nameof(selectedLanguage), Value = selectedLanguage});
+            LOGGER.Log(Level.FINE, "Saving language", new Param {Name = nameof(languageName.text), Value = languageName.text});
             
-            languageService.SaveLanguage(languageName.text);
+            string response = languageService.SaveLanguage(languageName.text);
+
+            if (response == null)
+            {
+                languagesDropdown.options.Add(new Dropdown.OptionData() {text = languageName.text});
+
+                RefreshLanguages();
+            }
+            else
+            {
+                LOGGER.Log(Level.WARNING, "Language could not be saved", new Param {Name = nameof(response), Value = response});
+                print(response);
+            }
+        }
+
+        private void RefreshLanguages()
+        {
+            languages = languageService.GetAllLanguages();
         }
 
         private void PopulateLanguages()

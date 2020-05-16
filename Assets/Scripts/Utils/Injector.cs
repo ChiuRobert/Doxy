@@ -5,6 +5,7 @@ using SbLogger;
 using SbLogger.Levels;
 using UI;
 using UnityEngine;
+using Utils.LogLevels;
 
 namespace Utils
 {
@@ -20,7 +21,7 @@ namespace Utils
 
         private static void Inject(object baseClass, string fieldName)
         {
-            LOGGER.Log(Level.INFO, "Injecting " + fieldName + " into " + baseClass);
+            LOGGER.Log(InjectionLevel.INJECTION, "Injecting " + fieldName + " into " + baseClass);
             
             FieldInfo fieldInfo = baseClass.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             InjectAttribute injectType = (InjectAttribute) Attribute.GetCustomAttribute(fieldInfo, typeof(InjectAttribute));

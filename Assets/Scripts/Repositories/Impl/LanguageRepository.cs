@@ -23,12 +23,46 @@ namespace Repositories.Impl
 
             IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
 
-            while (reader.Read())
+            if (reader != null)
             {
-                result = new Language {Id = reader.GetInt32(0), Name = reader.GetString(1)};
+                while (reader.Read())
+                {
+                    result = new Language {Id = reader.GetInt32(0), Name = reader.GetString(1)};
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
             }
-            
-            LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
+            }
+
+            return result;
+        }
+        
+        public Language GetByName(string name)
+        {
+            Language result = null;
+            string selectById = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Select().
+                Where().
+                Column(Const.LANGUAGE_NAME).Equal().Value(name).
+                Execute();
+
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    result = new Language {Id = reader.GetInt32(0), Name = reader.GetString(1)};
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
+            }
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
+            }
 
             return result;
         }
@@ -40,12 +74,20 @@ namespace Repositories.Impl
 
             IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectAll);
 
-            while (reader.Read())
+            if (reader != null)
             {
-                languages.Add(new Language() { Id = reader.GetInt32(0), Name = reader.GetString(1)});
+                while (reader.Read())
+                {
+                    languages.Add(new Language() {Id = reader.GetInt32(0), Name = reader.GetString(1)});
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned",
+                    new Param {Name = nameof(languages), Value = string.Join("\n", languages)});
             }
-            
-            LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(languages), Value = string.Join( "\n", languages)});
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
+            }
 
             return languages;
         }

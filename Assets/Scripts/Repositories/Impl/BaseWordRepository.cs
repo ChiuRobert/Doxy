@@ -29,18 +29,25 @@ namespace Repositories.Impl
 
             IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
 
-            while (reader.Read())
+            if (reader != null)
             {
-                result = new BaseWord()
+                while (reader.Read())
                 {
-                    Id = reader.GetInt32(0),
-                    Word = reader.GetString(1),
-                    Dialect = DialectRepository.GetById(reader.GetInt32(2))
-                };
+                    result = new BaseWord()
+                    {
+                        Id = reader.GetInt32(0),
+                        Word = reader.GetString(1),
+                        Dialect = DialectRepository.GetById(reader.GetInt32(2))
+                    };
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
+            }
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
             }
 
-            LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
-            
             return result;
         }
         

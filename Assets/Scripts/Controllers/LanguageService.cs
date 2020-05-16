@@ -24,11 +24,19 @@ namespace Controllers
             return languageRepository.GetAll();
         }
 
-        public void SaveLanguage(string name)
+        public string SaveLanguage(string name)
         {
             Language language = new Language {Name = name};
 
-            languageRepository.Persist(language);
+            Language existingLanguage = languageRepository.GetByName(name);
+
+            if (existingLanguage == null)
+            {
+                languageRepository.Persist(language);
+                return null;
+            }
+
+            return "The language already exists.";
         }
 
         public void DeleteLanguage(Language language)

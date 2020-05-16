@@ -7,7 +7,6 @@ namespace DataBase
 {
     public class DbTrigger : MonoBehaviour
     {
-        [Inject]
         private static SLogger LOGGER;
 
         private void Awake()
