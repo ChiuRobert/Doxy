@@ -1,6 +1,4 @@
-﻿using Entities;
-
-namespace Repositories
+﻿namespace Repositories
 {
     internal interface IRepository
     {

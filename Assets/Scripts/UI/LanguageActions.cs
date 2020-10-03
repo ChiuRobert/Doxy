@@ -5,7 +5,7 @@ using SbLogger;
 using SbLogger.Levels;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
+using Utils.Attributes;
 
 namespace UI
 {
@@ -25,9 +25,9 @@ namespace UI
 
         private void Start()
         {
-            LOGGER.Log(Level.INFO, "[1]LanguageActions initialized");
+            LOGGER.Log(Level.INFO, "[3]LanguageActions initialized");
 
-            RefreshLanguages();
+            GetAllLanguages();
             PopulateLanguages();
 
             languagesDropdown.onValueChanged.AddListener(delegate { SelectedLanguage(); });
@@ -42,7 +42,7 @@ namespace UI
             Dropdown.OptionData optionData = languagesDropdown.options.Find(x => string.Equals(x.text, selectedLanguage.Name));
             languagesDropdown.options.Remove(optionData);
             
-            RefreshLanguages();
+            GetAllLanguages();
         }
         
         public void SaveLanguage() 
@@ -53,9 +53,9 @@ namespace UI
 
             if (response == null)
             {
-                languagesDropdown.options.Add(new Dropdown.OptionData() {text = languageName.text});
+                languagesDropdown.options.Add(new Dropdown.OptionData {text = languageName.text});
 
-                RefreshLanguages();
+                GetAllLanguages();
             }
             else
             {
@@ -64,9 +64,11 @@ namespace UI
             }
         }
 
-        private void RefreshLanguages()
+        //TODO: Used in testing, change access modifier
+        public List<Language> GetAllLanguages()
         {
             languages = languageService.GetAllLanguages();
+            return languages;
         }
 
         private void PopulateLanguages()
@@ -75,7 +77,7 @@ namespace UI
             
             foreach (var language in languages)
             {
-                languagesDropdown.options.Add(new Dropdown.OptionData() {text = language.Name});
+                languagesDropdown.options.Add(new Dropdown.OptionData {text = language.Name});
             }
         }
 

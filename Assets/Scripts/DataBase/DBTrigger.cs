@@ -19,7 +19,7 @@ namespace DataBase
 
         private static void SetCrossPlatformPath()
         {
-            string path = "";
+            string path;
 
 #if UNITY_ANDROID
             path = "jar:file://" + Application.dataPath + "!/assets/";
@@ -34,6 +34,12 @@ namespace DataBase
             LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
             LOGGER.Log(Level.CONFIG, "Initializing game");
             LOGGER.Log(Level.CONFIG, "Path established", new Param { Name = nameof(path), Value = path });
+        }
+
+        //TODO: Used only for tests
+        public void SetUp()
+        {
+            Awake();
         }
     }
 }

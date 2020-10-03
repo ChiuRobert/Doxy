@@ -6,6 +6,6 @@ namespace Utils.LogLevels
     {
         public static readonly Level INJECTION = new InjectionLevel("INJECTION", 850);
 
-        public InjectionLevel(string name, int level) : base(name, level) { }
+        private InjectionLevel(string name, int level) : base(name, level) { }
     }
 }

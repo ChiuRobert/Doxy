@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils
+namespace Utils.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class UsePropertyAttribute : Attribute

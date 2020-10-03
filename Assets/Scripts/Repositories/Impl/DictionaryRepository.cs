@@ -5,6 +5,7 @@ using SbLogger;
 using SbLogger.Levels;
 using ScotchBoardSQL;
 using Utils;
+using Utils.Attributes;
 
 namespace Repositories.Impl
 {
@@ -33,7 +34,7 @@ namespace Repositories.Impl
             {
                 while (reader.Read())
                 {
-                    result = new Dictionary()
+                    result = new Dictionary
                     {
                         Id = reader.GetInt32(0),
                         BaseWord = BaseWordRepository.GetById(reader.GetInt32(1)),

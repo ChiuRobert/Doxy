@@ -5,6 +5,7 @@ using SbLogger;
 using SbLogger.Levels;
 using UI;
 using UnityEngine;
+using Utils.Attributes;
 using Utils.LogLevels;
 
 namespace Utils
@@ -15,22 +16,43 @@ namespace Utils
         
         public static void Initialize()
         {
-            Inject(FindObjectOfType<LanguageActions>(), "languageService");
+            InitializeLoggers();
+            InitializeServices();
+        }
+
+        private static void InitializeLoggers()
+        {
             Inject(FindObjectOfType<LanguageActions>(), "LOGGER");
+            
+        }
+
+        private static void InitializeServices()
+        {
+            Inject(FindObjectOfType<LanguageActions>(), "languageService");
         }
 
         private static void Inject(object baseClass, string fieldName)
         {
+            if (baseClass == null)
+            {
+                LOGGER.Log(Level.SEVERE, "Base class is null");
+                return;
+            }
+            
             LOGGER.Log(InjectionLevel.INJECTION, "Injecting " + fieldName + " into " + baseClass);
             
             FieldInfo fieldInfo = baseClass.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            if (fieldInfo == null)
+            {
+                LOGGER.Log(Level.SEVERE, "Field is null");
+                return;
+            }
+            
             InjectAttribute injectType = (InjectAttribute) Attribute.GetCustomAttribute(fieldInfo, typeof(InjectAttribute));
 
             if (injectType != null)
             {
-                object injectedClass = null;
-
-                injectedClass = fieldInfo.FieldType == typeof(SLogger)
+                object injectedClass = fieldInfo.FieldType == typeof(SLogger)
                     ? SLogger.GetLogger(baseClass.ToString(), FileService.GetLogPath())
                     : CreateByTypeName(fieldInfo.FieldType.ToString());
 

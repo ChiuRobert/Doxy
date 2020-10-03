@@ -4,6 +4,7 @@ using Mono.Data.Sqlite;
 using SbLogger;
 using SbLogger.Levels;
 using Utils;
+using Utils.LogLevels;
 
 namespace DataBase
 {
@@ -22,18 +23,7 @@ namespace DataBase
 
         private DbContext() { }
 
-        public static DbContext INSTANCE
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DbContext();
-                }
-
-                return instance;
-            }
-        }
+        public static DbContext INSTANCE => instance ?? (instance = new DbContext());
 
         /// <summary>
         /// Initialize the DB connection by creating the scheme and the tables
@@ -61,6 +51,7 @@ namespace DataBase
             // Create tables
             CreateTables();
 
+            //TODO: Close the db connection when game closes
             // Close connection
             //dbConnection.Close();
 
@@ -86,7 +77,7 @@ namespace DataBase
                 LOGGER.Log(Level.SEVERE, "Error executing command", e);
             }
 
-            LOGGER.Log(Level.CONFIG, "Command executed", new Param {Name = nameof(command), Value = command});
+            LOGGER.Log(DbLevel.DB, "Command executed", new Param {Name = nameof(command), Value = command});
 
             return reader;
         }
@@ -109,7 +100,7 @@ namespace DataBase
                 LOGGER.Log(Level.SEVERE, "Error creating tables", e);
             }
 
-            LOGGER.Log(Level.CONFIG, "Tables created");
+            LOGGER.Log(DbLevel.DB, "Tables created");
         }
     }
 }

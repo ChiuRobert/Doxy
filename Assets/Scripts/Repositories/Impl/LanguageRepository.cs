@@ -78,7 +78,7 @@ namespace Repositories.Impl
             {
                 while (reader.Read())
                 {
-                    languages.Add(new Language() {Id = reader.GetInt32(0), Name = reader.GetString(1)});
+                    languages.Add(new Language {Id = reader.GetInt32(0), Name = reader.GetString(1)});
                 }
 
                 LOGGER.Log(Level.FINE, "Object returned",

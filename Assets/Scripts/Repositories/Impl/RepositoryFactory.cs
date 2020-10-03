@@ -16,22 +16,22 @@ namespace Repositories.Impl
 
             if (typeof(T) == typeof(IBaseWordRepository))
             {
-                return (T)(IBaseWordRepository)(new BaseWordRepository());
+                return (T)(IBaseWordRepository)new BaseWordRepository();
             }
 
             if (typeof(T) == typeof(ILanguageRepository))
             {
-                return (T)(ILanguageRepository)(new LanguageRepository());
+                return (T)(ILanguageRepository)new LanguageRepository();
             }
             
             if (typeof(T) == typeof(IDialectRepository))
             {
-                return (T)(IDialectRepository)(new DialectRepository());
+                return (T)(IDialectRepository)new DialectRepository();
             }
             
             if (typeof(T) == typeof(IDictionaryRepository))
             {
-                return (T)(IDictionaryRepository)(new DictionaryRepository());
+                return (T)(IDictionaryRepository)new DictionaryRepository();
             }
             
             return result;

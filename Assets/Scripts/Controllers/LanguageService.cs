@@ -12,11 +12,13 @@ namespace Controllers
     {
         private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(LanguageService), FileService.GetLogPath());
 
-        private readonly ILanguageRepository languageRepository = RepositoryFactory.GetRepository<ILanguageRepository>();
+        private readonly ILanguageRepository languageRepository;
         
         public LanguageService()
         {
-            LOGGER.Log(Level.INFO, "[3]LanguageService initialized");
+            LOGGER.Log(Level.INFO, "[1]LanguageService initialized");
+            
+            languageRepository = RepositoryFactory.GetRepository<ILanguageRepository>();
         }
         
         public List<Language> GetAllLanguages()
