@@ -23,7 +23,7 @@ namespace UI
         public Dropdown languagesDropdown;
         public Text languageName;
 
-        private void Start()
+        public void Start()
         {
             LOGGER.Log(Level.INFO, "[3]LanguageActions initialized");
 
@@ -64,14 +64,18 @@ namespace UI
             }
         }
 
-        //TODO: Used in testing, change access modifier
         public List<Language> GetAllLanguages()
         {
             languages = languageService.GetAllLanguages();
             return languages;
         }
 
-        private void PopulateLanguages()
+        public Language GetByName(string entityName)
+        {
+            return languageService.GetByName(entityName);
+        }
+
+        public void PopulateLanguages()
         {
             LOGGER.Log(Level.FINE, "Populating language dropdown");
             

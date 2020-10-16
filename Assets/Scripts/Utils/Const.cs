@@ -14,7 +14,9 @@
         #region SQL
 
         public const string DATABASE_NAME = SQL_FOLDER + "doxydb.db";
+        public const string TEST_DATABASE_NAME = SQL_FOLDER + "testdoxydb.db";
         public const string CREATE_TABLES_SCRIPT = SQL_FOLDER + "createTables.txt";
+        public const string ADD_TEST_DATA = SQL_FOLDER + "addTestData.txt";
 
         public const string SCHEMA = "main";
         public const string ID = "id";
@@ -55,6 +57,7 @@
         #region Logs
 
         public const string LOG_FILE_NAME = LOGS_FOLDER + "logs.txt";
+        public const string TEST_LOG_FILE_NAME = LOGS_FOLDER + "testlogs.txt";
 
         #endregion
     }

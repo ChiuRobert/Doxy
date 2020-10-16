@@ -39,6 +39,12 @@
             </summary>
             <returns>Where</returns>
         </member>
+        <member name="M:ScotchBoardSQL.Decorator.DeleteQuery.Execute">
+            <summary>
+            Formats the query for final changes
+            </summary>
+            <returns>formatted query</returns>
+        </member>
         <member name="T:ScotchBoardSQL.Decorator.Expressions.Column`1">
             <summary>
             Enables the query use of COLUMN 
@@ -308,6 +314,12 @@
             </summary>
             <returns>Where</returns>
         </member>
+        <member name="M:ScotchBoardSQL.Decorator.SelectQuery.Execute">
+            <summary>
+            Formats the query for final changes
+            </summary>
+            <returns>formatted query</returns>
+        </member>
         <member name="T:ScotchBoardSQL.Decorator.UpdateQuery">
             <summary>
             Used in creating a UPDATE query
@@ -330,6 +342,12 @@
             Adds the WHERE keyword in the query
             </summary>
             <returns>Where</returns>
+        </member>
+        <member name="M:ScotchBoardSQL.IDeleteQuery.Execute">
+            <summary>
+            Formats the query for final changes
+            </summary>
+            <returns>formatted query</returns>
         </member>
         <member name="T:ScotchBoardSQL.IInsertQuery">
             <summary>
@@ -382,6 +400,12 @@
             Adds the WHERE keyword in the query
             </summary>
             <returns>Where</returns>
+        </member>
+        <member name="M:ScotchBoardSQL.ISelectQuery.Execute">
+            <summary>
+            Formats the query for final changes
+            </summary>
+            <returns>formatted query</returns>
         </member>
         <member name="T:ScotchBoardSQL.IUpdateQuery">
             <summary>

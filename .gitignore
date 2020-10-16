@@ -23,6 +23,12 @@ ExportedObj/
 *.svd
 *.pdb
 
+# Rider
+# Rider auto-generates .iml files, and contentModel.xml
+**/.idea/**/*.iml
+**/.idea/**/contentModel.xml
+**/.idea/**/modules.xml
+
 # Unity3D generated meta files
 *.pidb.meta
 
@@ -32,9 +38,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-
-Assets/Editor/
-
-Assets/Editor\.meta
 
 /Assets/StreamingAssets/Logs/

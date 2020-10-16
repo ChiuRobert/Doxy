@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using DataBase;
 using SbLogger;
 using SbLogger.Levels;
 
@@ -63,7 +64,7 @@ namespace Utils
         /// <see cref="CreateFullPath(string)"/>
         public static string GetLogPath()
         {
-            return CreateFullPath(Const.LOG_FILE_NAME);
+            return CreateFullPath(DbContext.INSTANCE.DatabaseType == Database.Production ? Const.LOG_FILE_NAME : Const.TEST_LOG_FILE_NAME);
         }
     }
 }

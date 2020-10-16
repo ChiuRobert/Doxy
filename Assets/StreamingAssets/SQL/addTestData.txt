@@ -1,0 +1,3 @@
+﻿INSERT INTO "main"."language"("id","name") VALUES (1,'Japanese');
+INSERT INTO "main"."language"("id","name") VALUES (2,'English');
+INSERT INTO "main"."language"("id","name") VALUES (3,'Romanian');

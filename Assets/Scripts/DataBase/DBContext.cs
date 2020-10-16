@@ -13,13 +13,14 @@ namespace DataBase
     /// </summary>
     public class DbContext
     {
-        private static readonly SLogger LOGGER = SLogger.GetLogger(nameof(DbContext), FileService.GetLogPath());
-
+        private static SLogger LOGGER;
         private static DbContext instance;
 
         private IDbConnection dbConnection;
         private IDbCommand dbCommand;
         private IDataReader reader;
+
+        public Database DatabaseType { get; set; }
 
         private DbContext() { }
 
@@ -30,8 +31,11 @@ namespace DataBase
         /// </summary>
         public void Initialize()
         {
+            LOGGER = SLogger.GetLogger(nameof(DbContext), FileService.GetLogPath());
+            
             // Create database
-            string connection = "URI=file:" + FileService.CreateFullPath(Const.DATABASE_NAME);
+            string connection = "URI=file:" + FileService.CreateFullPath
+                (DatabaseType == Database.Production ? Const.DATABASE_NAME : Const.TEST_DATABASE_NAME);
             
             LOGGER.Log(Level.CONFIG, "Connecting to database", new Param {Name = nameof(connection), Value = connection});
 
@@ -83,24 +87,32 @@ namespace DataBase
         }
 
         /// <summary>
-        /// Create the tables found inside createTables file
+        /// Executes an SQL script
         /// </summary>
-        private void CreateTables()
+        /// <param name="script">script to be executed</param>
+        public void ExecuteScript(string script)
         {
             dbCommand = dbConnection.CreateCommand();
-            string tableCreationQueries = FileService.ParseFile(FileService.CreateFullPath(Const.CREATE_TABLES_SCRIPT)).ToString();
 
             try
             {
-                dbCommand.CommandText = tableCreationQueries;
+                dbCommand.CommandText = script;
                 dbCommand.ExecuteReader();
             }
             catch (Exception e)
             {
-                LOGGER.Log(Level.SEVERE, "Error creating tables", e);
+                LOGGER.Log(Level.SEVERE, "Error executing script", e);
             }
 
-            LOGGER.Log(DbLevel.DB, "Tables created");
+            LOGGER.Log(DbLevel.DB, "Script executed successfully");
+        }
+
+        /// <summary>
+        /// Create the tables found inside createTables file
+        /// </summary>
+        private void CreateTables()
+        {
+            ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.CREATE_TABLES_SCRIPT)).ToString());
         }
     }
 }

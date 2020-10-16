@@ -9,15 +9,23 @@ namespace DataBase
     {
         private static SLogger LOGGER;
 
-        private void Awake()
+        public void Awake()
         {
-            SetCrossPlatformPath();
+            SetCrossPlatformPath(Database.Production);
             DbContext.INSTANCE.Initialize();
             
             Injector.Initialize();
         }
 
-        private static void SetCrossPlatformPath()
+        public void TestAwake()
+        {
+            SetCrossPlatformPath(Database.Test);
+            DbContext.INSTANCE.Initialize();
+            
+            Injector.Initialize();
+        }
+
+        private static void SetCrossPlatformPath(Database databaseType)
         {
             string path;
 
@@ -28,18 +36,13 @@ namespace DataBase
 #if UNITY_EDITOR
             path = Application.dataPath + "/StreamingAssets/";
 #endif
-            
+
+            DbContext.INSTANCE.DatabaseType = databaseType;
             Const.STREAMING_ASSETS = path;
             
             LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
             LOGGER.Log(Level.CONFIG, "Initializing game");
             LOGGER.Log(Level.CONFIG, "Path established", new Param { Name = nameof(path), Value = path });
-        }
-
-        //TODO: Used only for tests
-        public void SetUp()
-        {
-            Awake();
         }
     }
 }
