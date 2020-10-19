@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Controllers;
 using Entities;
 using SbLogger;
 using SbLogger.Levels;
+using Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Attributes;
@@ -44,7 +44,7 @@ namespace UI
             
             GetAllLanguages();
         }
-        
+
         public void SaveLanguage() 
         {
             LOGGER.Log(Level.FINE, "Saving language", new Param {Name = nameof(languageName.text), Value = languageName.text});
@@ -60,7 +60,6 @@ namespace UI
             else
             {
                 LOGGER.Log(Level.WARNING, "Language could not be saved", new Param {Name = nameof(response), Value = response});
-                print(response);
             }
         }
 
@@ -75,7 +74,7 @@ namespace UI
             return languageService.GetByName(entityName);
         }
 
-        public void PopulateLanguages()
+        private void PopulateLanguages()
         {
             LOGGER.Log(Level.FINE, "Populating language dropdown");
             

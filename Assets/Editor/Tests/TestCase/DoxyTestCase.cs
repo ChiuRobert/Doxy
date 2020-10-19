@@ -1,6 +1,7 @@
 ﻿using System;
 using DataBase;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using SbLogger;
 using ScotchBoardSQL;
 using UI;
@@ -8,9 +9,9 @@ using UnityEngine;
 using Utils;
 using Utils.LogLevels;
 
-namespace Editor.Tests
+namespace Editor.Tests.TestCase
 {
-    public class DoxyTestCase
+    public abstract class DoxyTestCase
     {
         protected static SLogger LOGGER;
         protected LanguageActions LanguageActions;
@@ -37,9 +38,6 @@ namespace Editor.Tests
             SetUpTestSpecific();
         }
 
-        protected virtual void OpenScene() { }
-        protected virtual void SetUpTestSpecific() { }
-        
         [OneTimeTearDown]
         public void TearDown()
         {
@@ -60,7 +58,31 @@ namespace Editor.Tests
         public void AfterTest()
         {
             var testName = TestContext.CurrentContext.Test.Name;
-            LOGGER.Log(TestLevel.TEST, "============== " + testName + " ended");
+            var testStatus = string.Empty;
+
+            switch (TestContext.CurrentContext.Result.Outcome.Status)
+            {
+                case (TestStatus.Passed):
+                    testStatus = " ended successfully";
+                    break;
+                
+                case (TestStatus.Failed):
+                    testStatus = " failed";
+                    break;
+                
+                case (TestStatus.Skipped):
+                    testStatus = " was skipped";
+                    break;
+                
+                case (TestStatus.Inconclusive):
+                    testStatus = " was inconclusive";
+                    break;
+            }
+            
+            LOGGER.Log(TestLevel.TEST, "============== " + testName + testStatus + "\n");
         }
+
+        protected abstract void OpenScene();
+        protected abstract void SetUpTestSpecific();
     }
 }

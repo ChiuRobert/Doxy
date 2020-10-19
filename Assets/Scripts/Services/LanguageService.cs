@@ -6,7 +6,7 @@ using SbLogger;
 using SbLogger.Levels;
 using Utils;
 
-namespace Controllers
+namespace Services
 {
     public class LanguageService
     {
@@ -46,7 +46,7 @@ namespace Controllers
 
         public void DeleteLanguage(Language language)
         {
-            languageRepository.Delete(languageRepository.GetById(language.Id));
+            languageRepository.Delete(language);
         }
     }
 }
