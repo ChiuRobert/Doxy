@@ -18,7 +18,7 @@ namespace Editor.Tests.TestCase
             }
             catch (Exception exception)
             {
-                LOGGER.Log(TestLevel.TEST, "Assertion failed: expected [" + expected + "] but was [" + actual + "]\n" +
+                LOGGER.Log(TestLevel.TEST_SEVERE, "Assertion failed: expected [" + expected + "] but was [" + actual + "]\n" +
                                            "Error " + exception);
                 Fail(exception.Message);
             }
@@ -32,8 +32,8 @@ namespace Editor.Tests.TestCase
             }
             catch (Exception exception)
             {
-                LOGGER.Log(TestLevel.TEST, "Assertion failed: expected [" + expected + "] but was [" + actual + "]\n" +
-                                           "Error " + exception);
+                LOGGER.Log(TestLevel.TEST_SEVERE, "Assertion failed: expected [" + expected + "] but was [" + actual + "]\n" +
+                                                  "Error " + exception);
                 Fail(exception.Message);
             }
         }

@@ -4,10 +4,13 @@ using NUnit.Framework;
 using UI;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
+using Utils.Exceptions;
 using Utils.LogLevels;
 
 using static Editor.Tests.TestCase.DoxyBase;
+using AssertionException = UnityEngine.Assertions.AssertionException;
 
 namespace Editor.Tests
 {
@@ -43,14 +46,21 @@ namespace Editor.Tests
         [OneTimeSetUp]
         public void TestSuiteSetUp()
         {
-            nameInput = GameObject.Find("Name Input").GetComponent<InputField>();
-            nameText = GameObject.Find("Name Text").GetComponent<Text>();
-            saveButton = GameObject.Find("SaveButton").GetComponent<Button>();
-            getAllButton = GameObject.Find("GetAllButton").GetComponent<Button>();
-            deleteButton = GameObject.Find("DeleteButton").GetComponent<Button>();
-            languagesDropdown = GameObject.Find("Languages").GetComponent<Dropdown>();
+            nameInput = GameObject.Find("NameInput")?.GetComponent<InputField>() ??
+                        throw new AssertException("nameInput doesn't exist");
+            nameText = GameObject.Find("NameText")?.GetComponent<Text>() ??
+                       throw new AssertException("nameText doesn't exist");
+            saveButton = GameObject.Find("SaveButton")?.GetComponent<Button>() ??
+                         throw new AssertException("saveButton doesn't exist");
+            getAllButton = GameObject.Find("GetAllButton")?.GetComponent<Button>() ??
+                           throw new AssertException("getAllButton doesn't exist");
+            deleteButton = GameObject.Find("DeleteButton")?.GetComponent<Button>() ??
+                           throw new AssertException("deleteButton doesn't exist");
+            languagesDropdown = GameObject.Find("Languages")?.GetComponent<Dropdown>() ??
+                                throw new AssertException("languagesDropdown doesn't exist");
             
             saveButton.onClick.AddListener(LanguageActions.SaveLanguage);
+            deleteButton.onClick.AddListener(LanguageActions.DeleteLanguage);
         }
 
         [Test]
@@ -66,7 +76,7 @@ namespace Editor.Tests
         [Order(1)]
         public void AddNewLanguage_Test()
         {
-            nameInput.text = "German";
+            Input(nameInput, "German");
             Click(saveButton);
 
             var germanLanguage = LanguageActions.GetByName(nameInput.text);
@@ -79,7 +89,7 @@ namespace Editor.Tests
         [Order(2)]
         public void AddExistingLanguage_Test()
         {
-            nameInput.text = "German";
+            Input(nameInput, "German");
             Click(saveButton);
             
             var options = languagesDropdown.options;
@@ -94,7 +104,7 @@ namespace Editor.Tests
             var options = languagesDropdown.options;
             languagesDropdown.value = options.Count - 1;
 
-            LanguageActions.DeleteLanguage();  
+            Click(deleteButton);
             Assertions.AreEqual(3, languagesDropdown.options.Count);
         }
     }
