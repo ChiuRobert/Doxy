@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LanguageTestScene.unity
     guid: 77c13a89f76abb0418caf8add0447430
+  - enabled: 1
+    path: Assets/Scenes/DialectTestScene.unity
+    guid: 8c5dccbfcf75c9e419a9f8e723ded541
   m_configObjects: {}

@@ -1,3 +1,9 @@
 ﻿INSERT INTO "main"."language"("id","name") VALUES (1,'Japanese');
 INSERT INTO "main"."language"("id","name") VALUES (2,'English');
 INSERT INTO "main"."language"("id","name") VALUES (3,'Romanian');
+
+INSERT INTO "main"."dialect"("id","name","language") VALUES (1,'Hiragana',1);
+INSERT INTO "main"."dialect"("id","name","language") VALUES (2,'Katakana',1);
+INSERT INTO "main"."dialect"("id","name","language") VALUES (3,'American',2);
+INSERT INTO "main"."dialect"("id","name","language") VALUES (4,'British',2);
+INSERT INTO "main"."dialect"("id","name","language") VALUES (5,'Romanian',3);

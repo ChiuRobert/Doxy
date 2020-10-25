@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataBase;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using SbLogger;
 using ScotchBoardSQL;
-using UI;
+using UI.Impl;
 using UnityEngine;
 using Utils;
 using Utils.LogLevels;
@@ -15,8 +16,12 @@ namespace Editor.Tests.TestCase
     {
         protected static SLogger LOGGER;
         protected LanguageActions LanguageActions;
+        protected DialectActions DialectActions;
         
         private DbTrigger dbTrigger;
+
+        private int numberOfTests;
+        private readonly Dictionary<TestStatus, int> testStatistics = new Dictionary<TestStatus, int>();
         
         [OneTimeSetUp]
         public void SetUp()
@@ -36,6 +41,9 @@ namespace Editor.Tests.TestCase
             
             LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
             SetUpTestSpecific();
+            
+            LOGGER.Log(TestLevel.TEST, "==================================");
+            LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
         }
 
         [OneTimeTearDown]
@@ -43,8 +51,34 @@ namespace Editor.Tests.TestCase
         {
             LOGGER.Log(TestLevel.TEST, "============== Clearing database");
             
+            string deleteAllDialects = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Delete().Execute();
+            DbContext.INSTANCE.ExecuteCommand(deleteAllDialects);
+            
             string deleteAllLanguages = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Delete().Execute();
             DbContext.INSTANCE.ExecuteCommand(deleteAllLanguages);
+
+            LOGGER.Log(TestLevel.TEST, "==================================");
+            LOGGER.Log(TestLevel.TEST,
+                "============== REPORT Test Suite " + TestContext.CurrentContext.Test.ClassName);
+            
+            LOGGER.Log(TestLevel.TEST,
+                "Number of tests: " + numberOfTests + ";");
+            LOGGER.Log(TestLevel.TEST,
+                "Successful tests: " +
+                (testStatistics.ContainsKey(TestStatus.Passed) ? testStatistics[TestStatus.Passed] : 0) + ";");
+            LOGGER.Log(TestLevel.TEST,
+                "Failed tests: " +
+                (testStatistics.ContainsKey(TestStatus.Failed) ? testStatistics[TestStatus.Failed] : 0) + ";");
+            LOGGER.Log(TestLevel.TEST,
+                "Skipped tests: " +
+                (testStatistics.ContainsKey(TestStatus.Skipped) ? testStatistics[TestStatus.Skipped] : 0) + ";");
+            LOGGER.Log(TestLevel.TEST,
+                "Inconclusive tests: " +
+                (testStatistics.ContainsKey(TestStatus.Inconclusive) ? testStatistics[TestStatus.Inconclusive] : 0) + ";");
+            
+            LOGGER.Log(TestLevel.TEST,
+                "============== Test Suite " + TestContext.CurrentContext.Test.ClassName + " ended");
+            LOGGER.Log(TestLevel.TEST, "==================================\n");
         }
 
         [SetUp]
@@ -59,8 +93,9 @@ namespace Editor.Tests.TestCase
         {
             var testName = TestContext.CurrentContext.Test.Name;
             var testStatus = string.Empty;
+            var finalTestStatus = TestContext.CurrentContext.Result.Outcome.Status;
 
-            switch (TestContext.CurrentContext.Result.Outcome.Status)
+            switch (finalTestStatus)
             {
                 case (TestStatus.Passed):
                     testStatus = " ended successfully";
@@ -77,6 +112,16 @@ namespace Editor.Tests.TestCase
                 case (TestStatus.Inconclusive):
                     testStatus = " was inconclusive";
                     break;
+            }
+
+            numberOfTests++;
+            if (!testStatistics.ContainsKey(finalTestStatus))
+            {
+                testStatistics.Add(finalTestStatus, 1);
+            }
+            else
+            {
+                testStatistics[finalTestStatus]++;
             }
             
             LOGGER.Log(TestLevel.TEST, "============== " + testName + testStatus + "\n");

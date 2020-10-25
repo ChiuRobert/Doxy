@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using SbLogger;
 using SbLogger.Levels;
-using UI;
+using UI.Impl;
 using UnityEngine;
 using Utils.Attributes;
 using Utils.LogLevels;
@@ -23,19 +23,21 @@ namespace Utils
         private static void InitializeLoggers()
         {
             Inject(FindObjectOfType<LanguageActions>(), "LOGGER");
+            Inject(FindObjectOfType<DialectActions>(), "LOGGER");
             
         }
 
         private static void InitializeServices()
         {
             Inject(FindObjectOfType<LanguageActions>(), "languageService");
+            Inject(FindObjectOfType<DialectActions>(), "dialectService");
         }
 
         private static void Inject(object baseClass, string fieldName)
         {
             if (baseClass == null)
             {
-                LOGGER.Log(Level.SEVERE, "Base class is null");
+                LOGGER.Log(Level.SEVERE, "Base class is null", new Param {Name = nameof(baseClass), Value = baseClass});
                 return;
             }
             

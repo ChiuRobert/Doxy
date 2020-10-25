@@ -7,9 +7,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.Attributes;
 
-namespace UI
+namespace UI.Impl
 {
-    public class LanguageActions : MonoBehaviour
+    [RequireComponent(typeof(Dropdown), typeof(Text))]
+    public class LanguageActions : MonoBehaviour, ILanguageActions
     {
         [Inject]
         private static SLogger LOGGER;
@@ -33,18 +34,6 @@ namespace UI
             languagesDropdown.onValueChanged.AddListener(delegate { SelectedLanguage(); });
         }
 
-        public void DeleteLanguage()
-        {
-            LOGGER.Log(Level.FINE, "Deleting language", new Param {Name = nameof(selectedLanguage), Value = selectedLanguage});
-            
-            languageService.DeleteLanguage(selectedLanguage);
-
-            Dropdown.OptionData optionData = languagesDropdown.options.Find(x => string.Equals(x.text, selectedLanguage.Name));
-            languagesDropdown.options.Remove(optionData);
-            
-            GetAllLanguages();
-        }
-
         public void SaveLanguage() 
         {
             LOGGER.Log(Level.FINE, "Saving language", new Param {Name = nameof(languageName.text), Value = languageName.text});
@@ -59,14 +48,31 @@ namespace UI
             }
             else
             {
-                LOGGER.Log(Level.WARNING, "Language could not be saved", new Param {Name = nameof(response), Value = response});
+                LOGGER.Log(Level.SEVERE, "Language could not be saved", new Param {Name = nameof(response), Value = response});
             }
+        }
+        
+        public void DeleteLanguage()
+        {
+            LOGGER.Log(Level.FINE, "Deleting language", new Param {Name = nameof(selectedLanguage), Value = selectedLanguage});
+            
+            languageService.DeleteLanguage(selectedLanguage);
+
+            Dropdown.OptionData optionData = languagesDropdown.options.Find(x => string.Equals(x.text, selectedLanguage.Name));
+            languagesDropdown.options.Remove(optionData);
+            
+            GetAllLanguages();
         }
 
         public List<Language> GetAllLanguages()
         {
             languages = languageService.GetAllLanguages();
             return languages;
+        }
+
+        public Language GetSelectedLanguage()
+        {
+            return selectedLanguage;
         }
 
         public Language GetByName(string entityName)

@@ -1,5 +1,4 @@
 ﻿using SbLogger;
-using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 using Utils.LogLevels;
@@ -19,7 +18,7 @@ namespace Editor.Tests.TestCase
 
         internal static void Input(InputField input, string text)
         {
-            LOGGER.Log(TestLevel.TEST, "Sending text " + text + " to input " + input.name);
+            LOGGER.Log(TestLevel.TEST, "Setting text " + text + " to input " + input.name);
             input.text = text;
         }
     }

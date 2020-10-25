@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using DataBase;
 using Entities;
 using SbLogger;
@@ -51,7 +52,71 @@ namespace Repositories.Impl
 
             return result;
         }
-        
+
+        public Dialect GetByNameLanguage(string name, Language language)
+        {
+            Dialect result = null;
+            string selectById = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Select().
+                Where().
+                Column(Const.DIALECT_NAME).Equal().Value(name).
+                And().
+                Column(Const.DIALECT_LANGUAGE).Equal().Value(language.Id).
+                Execute();
+
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    result = new Dialect 
+                    {
+                        Id = reader.GetInt32(0), 
+                        Name = reader.GetString(1),
+                        Language = LanguageRepository.GetById(reader.GetInt32(2))
+                    };
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned", new Param {Name = nameof(result), Value = result});
+            }
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
+            }
+
+            return result;
+        }
+
+        public List<Dialect> GetAll()
+        {
+            List<Dialect> dialects = new List<Dialect>();
+            string selectAll = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Select().Execute();
+
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectAll);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    dialects.Add(new Dialect
+                    {
+                        Id = reader.GetInt32(0), 
+                        Name = reader.GetString(1),
+                        Language = LanguageRepository.GetById(reader.GetInt32(2))
+                    });
+                }
+
+                LOGGER.Log(Level.FINE, "Object returned",
+                    new Param {Name = nameof(dialects), Value = string.Join("\n", dialects)});
+            }
+            else
+            {
+                LOGGER.Log(Level.SEVERE, "The reader was null");
+            }
+
+            return dialects;
+        }
+
         public void Persist(Dialect entity)
         {
             string persistEntity = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Insert().

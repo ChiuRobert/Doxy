@@ -1,16 +1,14 @@
 ﻿using System;
 using Editor.Tests.TestCase;
 using NUnit.Framework;
-using UI;
+using UI.Impl;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 using Utils.Exceptions;
 using Utils.LogLevels;
 
 using static Editor.Tests.TestCase.DoxyBase;
-using AssertionException = UnityEngine.Assertions.AssertionException;
 
 namespace Editor.Tests
 {
@@ -21,7 +19,6 @@ namespace Editor.Tests
         private InputField nameInput;
         private Text nameText;
         private Button saveButton;
-        private Button getAllButton;
         private Button deleteButton;
         private Dropdown languagesDropdown;
 
@@ -36,7 +33,7 @@ namespace Editor.Tests
             
             if (LanguageActions == null)
             {
-                LOGGER.Log(TestLevel.TEST, "LanguageActions not found");
+                LOGGER.Log(TestLevel.TEST_SEVERE, "LanguageActions not found");
                 throw new NullReferenceException();
             }
             
@@ -47,17 +44,15 @@ namespace Editor.Tests
         public void TestSuiteSetUp()
         {
             nameInput = GameObject.Find("NameInput")?.GetComponent<InputField>() ??
-                        throw new AssertException("nameInput doesn't exist");
+                        throw new GameObjectNotFoundException("nameInput doesn't exist");
             nameText = GameObject.Find("NameText")?.GetComponent<Text>() ??
-                       throw new AssertException("nameText doesn't exist");
+                       throw new GameObjectNotFoundException("nameText doesn't exist");
             saveButton = GameObject.Find("SaveButton")?.GetComponent<Button>() ??
-                         throw new AssertException("saveButton doesn't exist");
-            getAllButton = GameObject.Find("GetAllButton")?.GetComponent<Button>() ??
-                           throw new AssertException("getAllButton doesn't exist");
+                         throw new GameObjectNotFoundException("saveButton doesn't exist");
             deleteButton = GameObject.Find("DeleteButton")?.GetComponent<Button>() ??
-                           throw new AssertException("deleteButton doesn't exist");
+                           throw new GameObjectNotFoundException("deleteButton doesn't exist");
             languagesDropdown = GameObject.Find("Languages")?.GetComponent<Dropdown>() ??
-                                throw new AssertException("languagesDropdown doesn't exist");
+                                throw new GameObjectNotFoundException("languagesDropdown doesn't exist");
             
             saveButton.onClick.AddListener(LanguageActions.SaveLanguage);
             deleteButton.onClick.AddListener(LanguageActions.DeleteLanguage);
