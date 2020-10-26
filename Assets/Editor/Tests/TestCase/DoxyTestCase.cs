@@ -17,6 +17,7 @@ namespace Editor.Tests.TestCase
         protected static SLogger LOGGER;
         protected LanguageActions LanguageActions;
         protected DialectActions DialectActions;
+        protected BaseWordActions BaseWordActions;
         
         private DbTrigger dbTrigger;
 
@@ -50,6 +51,9 @@ namespace Editor.Tests.TestCase
         public void TearDown()
         {
             LOGGER.Log(TestLevel.TEST, "============== Clearing database");
+            
+            string deleteAllBaseWords = new Query(Const.SCHEMA, Const.BASEWORD_TABLE).Delete().Execute();
+            DbContext.INSTANCE.ExecuteCommand(deleteAllBaseWords);
             
             string deleteAllDialects = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Delete().Execute();
             DbContext.INSTANCE.ExecuteCommand(deleteAllDialects);

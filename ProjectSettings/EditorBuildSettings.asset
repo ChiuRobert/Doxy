@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DialectTestScene.unity
     guid: 8c5dccbfcf75c9e419a9f8e723ded541
+  - enabled: 1
+    path: Assets/Scenes/BaseWordTestScene.unity
+    guid: 42a223345de30cb4eb5f0e1673ef44bf
   m_configObjects: {}

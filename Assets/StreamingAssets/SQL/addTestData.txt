@@ -2,8 +2,20 @@
 INSERT INTO "main"."language"("id","name") VALUES (2,'English');
 INSERT INTO "main"."language"("id","name") VALUES (3,'Romanian');
 
+
 INSERT INTO "main"."dialect"("id","name","language") VALUES (1,'Hiragana',1);
 INSERT INTO "main"."dialect"("id","name","language") VALUES (2,'Katakana',1);
 INSERT INTO "main"."dialect"("id","name","language") VALUES (3,'American',2);
 INSERT INTO "main"."dialect"("id","name","language") VALUES (4,'British',2);
 INSERT INTO "main"."dialect"("id","name","language") VALUES (5,'Romanian',3);
+
+
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (1,'ue',1);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (2,'up',3);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (3,'up',4);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (4,'sus',5);
+
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (5,'iro',1);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (6,'color',3);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (7,'colour',4);
+INSERT INTO "main"."baseword"("id","word","dialect") VALUES (8,'culoare',5);

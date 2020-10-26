@@ -24,6 +24,7 @@ namespace Utils
         {
             Inject(FindObjectOfType<LanguageActions>(), "LOGGER");
             Inject(FindObjectOfType<DialectActions>(), "LOGGER");
+            Inject(FindObjectOfType<BaseWordActions>(), "LOGGER");
             
         }
 
@@ -31,6 +32,7 @@ namespace Utils
         {
             Inject(FindObjectOfType<LanguageActions>(), "languageService");
             Inject(FindObjectOfType<DialectActions>(), "dialectService");
+            Inject(FindObjectOfType<BaseWordActions>(), "baseWordService");
         }
 
         private static void Inject(object baseClass, string fieldName)

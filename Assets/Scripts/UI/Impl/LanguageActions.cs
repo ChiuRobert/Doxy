@@ -9,7 +9,6 @@ using Utils.Attributes;
 
 namespace UI.Impl
 {
-    [RequireComponent(typeof(Dropdown), typeof(Text))]
     public class LanguageActions : MonoBehaviour, ILanguageActions
     {
         [Inject]

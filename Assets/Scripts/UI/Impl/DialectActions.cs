@@ -9,11 +9,8 @@ using Utils.Attributes;
 
 namespace UI.Impl
 {
-    [RequireComponent(
-        typeof(Dropdown), 
-        typeof(Text), 
-        typeof(ILanguageActions))]
-    public class DialectActions : MonoBehaviour
+    [RequireComponent(typeof(ILanguageActions))]
+    public class DialectActions : MonoBehaviour, IDialectActions
     {
         [Inject]
         private static SLogger LOGGER;
@@ -33,7 +30,7 @@ namespace UI.Impl
         {
             LOGGER.Log(Level.INFO, "[3]DialectActions initialized");
 
-            languageActions = GameObject.Find("Actions").GetComponent<LanguageActions>();
+            languageActions = GameObject.Find("Actions").GetComponent<ILanguageActions>();
             
             GetAllDialects();
             PopulateDialects();
@@ -93,6 +90,11 @@ namespace UI.Impl
         public Dialect GetByNameLanguage(string entityName, Language language)
         {
             return dialectService.GetByNameLanguage(entityName, language);
+        }
+        
+        public Dialect GetSelectedDialect()
+        {
+            return selectedDialect;
         }
 
         private void PopulateDialects()

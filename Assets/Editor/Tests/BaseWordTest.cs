@@ -12,9 +12,9 @@ using static Editor.Tests.TestCase.DoxyBase;
 
 namespace Editor.Tests
 {
-    public class DialectTest : DoxyTestCase
+    public class BaseWordTest : DoxyTestCase
     {
-        private const string SCENE_NAME = "Assets/Scenes/DialectTestScene.unity";
+        private const string SCENE_NAME = "Assets/Scenes/BaseWordTestScene.unity";
         
         private InputField nameInput;
         private Text nameText;
@@ -22,6 +22,7 @@ namespace Editor.Tests
         private Button deleteButton;
         private Dropdown languagesDropdown;
         private Dropdown dialectsDropdown;
+        private Dropdown baseWordsDropdown;
         
         protected override void OpenScene()
         {
@@ -32,6 +33,7 @@ namespace Editor.Tests
         {
             LanguageActions = GameObject.Find("Actions").GetComponent<LanguageActions>();
             DialectActions = GameObject.Find("Actions").GetComponent<DialectActions>();
+            BaseWordActions = GameObject.Find("Actions").GetComponent<BaseWordActions>();
             
             if (LanguageActions == null)
             {
@@ -43,9 +45,15 @@ namespace Editor.Tests
                 LOGGER.Log(TestLevel.TEST_SEVERE, "DialectActions not found");
                 throw new NullReferenceException();
             }
+            if (BaseWordActions == null)
+            {
+                LOGGER.Log(TestLevel.TEST_SEVERE, "BaseWordActions not found");
+                throw new NullReferenceException();
+            }
             
             LanguageActions.Start();
             DialectActions.Start();
+            BaseWordActions.Start();
         }
         
         [OneTimeSetUp]
@@ -63,54 +71,56 @@ namespace Editor.Tests
                                 throw new GameObjectNotFoundException("languagesDropdown doesn't exist");
             dialectsDropdown = GameObject.Find("Dialects")?.GetComponent<Dropdown>() ??
                                throw new GameObjectNotFoundException("dialectsDropdown doesn't exist");
+            baseWordsDropdown = GameObject.Find("BaseWords")?.GetComponent<Dropdown>() ??
+                                throw new GameObjectNotFoundException("baseWordsDropdown doesn't exist");
             
-            saveButton.onClick.AddListener(DialectActions.SaveDialect);
-            deleteButton.onClick.AddListener(DialectActions.DeleteDialect);
+            saveButton.onClick.AddListener(BaseWordActions.SaveBaseWord);
+            deleteButton.onClick.AddListener(BaseWordActions.DeleteBaseWord);
         }
         
         [Test]
         [Order(0)]
-        public void DialectsCount_Test()
+        public void BaseWordsCount_Test()
         {
-            var dialects = DialectActions.GetAllDialects();
+            var baseWords = BaseWordActions.GetAllBaseWords();
             
-            Assertions.AreEqual(dialects.Count, dialectsDropdown.options.Count);
+            Assertions.AreEqual(baseWords.Count, baseWordsDropdown.options.Count);
         }
         
         [Test]
         [Order(1)]
-        public void AddNewDialect_Test()
+        public void AddNewBaseWord_Test()
         {
-            // Set what the Dialect's name will be
-            Input(nameInput, "Kanji");
+            // Set what the BaseWord's word will be
+            Input(nameInput, "ie");
 
-            // Select the language whose dialect this will be
-            int japaneseOption = languagesDropdown.options.FindIndex(x => string.Equals(x.text, "Japanese"));
-            languagesDropdown.value = japaneseOption;
+            // Select the Dialect whose BaseWord this will be
+            int hiraganaOption = dialectsDropdown.options.FindIndex(x => string.Equals(x.text, "Hiragana"));
+            dialectsDropdown.value = hiraganaOption;
             
             // Save the Dialect
             Click(saveButton);
             
-            var options = dialectsDropdown.options;
+            var options = baseWordsDropdown.options;
             
             Assertions.AreEqual(nameInput.text, options[options.Count - 1].text);
         }
 
         [Test]
         [Order(2)]
-        public void AddSameDialectNameDifferentLanguage_Test()
+        public void AddSameBaseWordDifferentDialect_Test()
         {
-            // Set what the Dialect's name will be
-            Input(nameInput, "Kanji");
+            // Set what the BaseWord's word will be
+            Input(nameInput, "ie");
 
-            // Select the language whose dialect this will be
-            int romanianOption = languagesDropdown.options.FindIndex(x => string.Equals(x.text, "Romanian"));
-            languagesDropdown.value = romanianOption;
+            // Select the Dialect whose BaseWord this will be
+            int katakanaOption = dialectsDropdown.options.FindIndex(x => string.Equals(x.text, "Katakana"));
+            dialectsDropdown.value = katakanaOption;
             
             // Save the Dialect
             Click(saveButton);
             
-            var options = dialectsDropdown.options;
+            var options = baseWordsDropdown.options;
             
             Assertions.AreEqual(nameInput.text, options[options.Count - 2].text);
             Assertions.AreEqual(nameInput.text, options[options.Count - 1].text);
@@ -118,29 +128,29 @@ namespace Editor.Tests
 
         [Test]
         [Order(3)]
-        public void AddExistingDialect_Test()
+        public void AddExistingBaseWord_Test()
         {
-            Input(nameInput, "Kanji");
+            Input(nameInput, "ie");
             
-            int japaneseOption = languagesDropdown.options.FindIndex(x => string.Equals(x.text, "Japanese"));
-            languagesDropdown.value = japaneseOption;
+            int hiraganaOption = dialectsDropdown.options.FindIndex(x => string.Equals(x.text, "Hiragana"));
+            dialectsDropdown.value = hiraganaOption;
             
             Click(saveButton);
             
-            var options = dialectsDropdown.options;
+            var options = baseWordsDropdown.options;
             
             Assertions.AreEqual(nameInput.text, options[options.Count - 1].text);
         }
 
         [Test]
         [Order(4)]
-        public void DeleteDialect_Test()
+        public void DeleteBaseWord_Test()
         {
-            var options = dialectsDropdown.options;
-            dialectsDropdown.value = options.Count - 1;
+            var options = baseWordsDropdown.options;
+            baseWordsDropdown.value = options.Count - 1;
 
             Click(deleteButton);
-            Assertions.AreEqual(6, dialectsDropdown.options.Count);
+            Assertions.AreEqual(9, baseWordsDropdown.options.Count);
         }
     }
 }
