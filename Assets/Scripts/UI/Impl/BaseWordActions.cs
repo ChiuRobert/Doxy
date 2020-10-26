@@ -10,13 +10,14 @@ using Utils.Attributes;
 namespace UI.Impl
 {
     [RequireComponent(typeof(IDialectActions))]
-    public class BaseWordActions : MonoBehaviour
+    public class BaseWordActions : MonoBehaviour, IBaseWordActions
     {
         [Inject]
         private static SLogger LOGGER;
 
-        [Inject]
-        private BaseWordService baseWordService;
+        // TODO: Adapt Injector
+        // [Inject]
+        private readonly BaseWordService baseWordService = new BaseWordService();
         
         private IDialectActions dialectActions;
         
@@ -90,6 +91,11 @@ namespace UI.Impl
         public BaseWord GetByWordDialect(string word, Dialect dialect)
         {
             return baseWordService.GetByWordDialect(word, dialect);
+        }
+        
+        public BaseWord GetSelectedBaseWord()
+        {
+            return selectedBaseWord;
         }
 
         private void PopulateBaseWords()

@@ -56,14 +56,14 @@ namespace Repositories.Impl
         public Dialect GetByNameLanguage(string name, Language language)
         {
             Dialect result = null;
-            string selectById = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Select().
+            string selectByNameLanguage = new Query(Const.SCHEMA, Const.DIALECT_TABLE).Select().
                 Where().
                 Column(Const.DIALECT_NAME).Equal().Value(name).
                 And().
                 Column(Const.DIALECT_LANGUAGE).Equal().Value(language.Id).
                 Execute();
 
-            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectByNameLanguage);
 
             if (reader != null)
             {

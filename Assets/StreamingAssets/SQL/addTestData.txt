@@ -19,3 +19,12 @@ INSERT INTO "main"."baseword"("id","word","dialect") VALUES (5,'iro',1);
 INSERT INTO "main"."baseword"("id","word","dialect") VALUES (6,'color',3);
 INSERT INTO "main"."baseword"("id","word","dialect") VALUES (7,'colour',4);
 INSERT INTO "main"."baseword"("id","word","dialect") VALUES (8,'culoare',5);
+
+
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (1, 2);
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (1, 4);
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (2, 4);
+
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (5, 6);
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (5, 8);
+INSERT INTO "main"."dictionary"("baseWord","translatedWord") VALUES (6, 8); 

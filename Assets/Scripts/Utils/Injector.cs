@@ -25,6 +25,7 @@ namespace Utils
             Inject(FindObjectOfType<LanguageActions>(), "LOGGER");
             Inject(FindObjectOfType<DialectActions>(), "LOGGER");
             Inject(FindObjectOfType<BaseWordActions>(), "LOGGER");
+            Inject(FindObjectOfType<DictionaryActions>(), "LOGGER");
             
         }
 
@@ -32,7 +33,8 @@ namespace Utils
         {
             Inject(FindObjectOfType<LanguageActions>(), "languageService");
             Inject(FindObjectOfType<DialectActions>(), "dialectService");
-            Inject(FindObjectOfType<BaseWordActions>(), "baseWordService");
+            // Inject(FindObjectOfType<BaseWordActions>(), "baseWordService");
+            Inject(FindObjectOfType<DictionaryActions>(), "dictionaryService");
         }
 
         private static void Inject(object baseClass, string fieldName)
@@ -48,7 +50,7 @@ namespace Utils
             FieldInfo fieldInfo = baseClass.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             if (fieldInfo == null)
             {
-                LOGGER.Log(Level.SEVERE, "Field is null");
+                LOGGER.Log(Level.SEVERE, "The field doesn't exist");
                 return;
             }
             

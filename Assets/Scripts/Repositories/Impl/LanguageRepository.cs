@@ -43,12 +43,12 @@ namespace Repositories.Impl
         public Language GetByName(string name)
         {
             Language result = null;
-            string selectById = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Select().
+            string selectByName = new Query(Const.SCHEMA, Const.LANGUAGE_TABLE).Select().
                 Where().
                 Column(Const.LANGUAGE_NAME).Equal().Value(name).
                 Execute();
 
-            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectByName);
 
             if (reader != null)
             {

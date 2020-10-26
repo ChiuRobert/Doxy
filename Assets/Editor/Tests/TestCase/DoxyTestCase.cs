@@ -15,9 +15,12 @@ namespace Editor.Tests.TestCase
     public abstract class DoxyTestCase
     {
         protected static SLogger LOGGER;
+        
         protected LanguageActions LanguageActions;
         protected DialectActions DialectActions;
         protected BaseWordActions BaseWordActions;
+        protected BaseWordActions TranslatedWordActions;
+        protected DictionaryActions DictionaryActions;
         
         private DbTrigger dbTrigger;
 
@@ -52,6 +55,9 @@ namespace Editor.Tests.TestCase
         {
             LOGGER.Log(TestLevel.TEST, "============== Clearing database");
             
+            string deleteAllDictionaries = new Query(Const.SCHEMA, Const.DICTIONARY_TABLE).Delete().Execute();
+            DbContext.INSTANCE.ExecuteCommand(deleteAllDictionaries);
+
             string deleteAllBaseWords = new Query(Const.SCHEMA, Const.BASEWORD_TABLE).Delete().Execute();
             DbContext.INSTANCE.ExecuteCommand(deleteAllBaseWords);
             

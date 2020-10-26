@@ -56,14 +56,14 @@ namespace Repositories.Impl
         public BaseWord GetByWordDialect(string word, Dialect dialect)
         {
             BaseWord result = null;
-            string selectById = new Query(Const.SCHEMA, Const.BASEWORD_TABLE).Select().
+            string selectByWordDialect = new Query(Const.SCHEMA, Const.BASEWORD_TABLE).Select().
                 Where().
                 Column(Const.BASEWORD_WORD).Equal().Value(word).
                 And().
                 Column(Const.BASEWORD_DIALECT).Equal().Value(dialect.Id).
                 Execute();
 
-            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectById);
+            IDataReader reader = DbContext.INSTANCE.ExecuteCommand(selectByWordDialect);
 
             if (reader != null)
             {
