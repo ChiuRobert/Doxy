@@ -32,22 +32,22 @@ namespace Editor.Tests.TestCase
         {
             OpenScene();
 
-            dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
-            
-            if (dbTrigger == null)
-            {
-                throw new NullReferenceException();
-            }
+            // dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
+            //
+            // if (dbTrigger == null)
+            // {
+            //     throw new NullReferenceException();
+            // }
             
             dbTrigger.TestAwake();
-            DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
-            LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
-            
-            LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
-            SetUpTestSpecific();
-            
-            LOGGER.Log(TestLevel.TEST, "==================================");
-            LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
+            // DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
+            // LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
+            //
+            // LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
+            // SetUpTestSpecific();
+            //
+            // LOGGER.Log(TestLevel.TEST, "==================================");
+            // LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
         }
 
         [OneTimeTearDown]
