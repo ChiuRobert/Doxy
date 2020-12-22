@@ -37,6 +37,10 @@ namespace DataBase
             path = Application.dataPath + "/StreamingAssets/";
 #endif
 
+#if UNITY_EDITOR_LINUX
+            path = Application.dataPath + "/Assets/StreamingAssets/";
+#endif
+            
             DbContext.INSTANCE.DatabaseType = databaseType;
             Const.STREAMING_ASSETS = path;
             
