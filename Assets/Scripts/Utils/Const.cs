@@ -56,7 +56,7 @@
 
         #region Logs
 
-        public const string LOG_FILE_NAME = LOGS_FOLDER + "logss.txt";
+        public const string LOG_FILE_NAME = LOGS_FOLDER + "logs.txt";
         public const string TEST_LOG_FILE_NAME = LOGS_FOLDER + "testlogs.txt";
 
         #endregion

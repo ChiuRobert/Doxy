@@ -34,7 +34,7 @@ namespace DataBase
 #endif
             
 #if UNITY_EDITOR || UNITY_STANDALONE
-            path = Application.dataPath + "/StreamingAssets/";
+            path = Application.dataPath + "/";// + "/StreamingAssets/";
 #endif
 
             DbContext.INSTANCE.DatabaseType = databaseType;
