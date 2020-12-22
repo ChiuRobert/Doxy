@@ -42,7 +42,7 @@ namespace DataBase
 // #endif
             path = Application.streamingAssetsPath + "/";
             
-            DbContext.INSTANCE.DatabaseType = databaseType;
+            DbContext.INSTANCE.DatabaseType = Database.Test;
             Const.STREAMING_ASSETS = path;
             
             LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
