@@ -11,21 +11,13 @@ namespace DataBase
 
         public void Awake()
         {
-            SetCrossPlatformPath(Database.Production);
+            SetCrossPlatformPath();
             DbContext.INSTANCE.Initialize();
             
             Injector.Initialize();
         }
 
-        public void TestAwake()
-        {
-            SetCrossPlatformPath(Database.Test);
-            DbContext.INSTANCE.Initialize();
-            
-            Injector.Initialize();
-        }
-
-        private static void SetCrossPlatformPath(Database databaseType)
+        private static void SetCrossPlatformPath()
         {
             string path;
 
@@ -37,7 +29,7 @@ namespace DataBase
             path = Application.streamingAssetsPath + "/";
 #endif
 
-            DbContext.INSTANCE.DatabaseType = databaseType;
+            DbContext.INSTANCE.DatabaseType = Database.Production;
             Const.STREAMING_ASSETS = path;
             
             LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());

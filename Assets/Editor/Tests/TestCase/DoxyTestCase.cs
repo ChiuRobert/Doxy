@@ -17,8 +17,6 @@ namespace Editor.Tests.TestCase
 {
     public abstract class DoxyTestCase
     {
-        private const string BASE_SCENE_NAME = "Assets/Scenes/LanguageTestScene.unity";
-        
         protected static SLogger LOGGER;
         
         protected LanguageActions LanguageActions;
@@ -37,36 +35,7 @@ namespace Editor.Tests.TestCase
         {
             OpenScene();
 
-            if (SceneManager.GetActiveScene().name.Contains("Language"))
-            {
-                dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
-
-                if (dbTrigger == null)
-                {
-                    throw new NullReferenceException();
-                }
-
-                dbTrigger.TestAwake();
-            }
-            else
-            {
-                string path = Application.streamingAssetsPath + "/";
-
-                DbContext.INSTANCE.DatabaseType = Database.Test;
-                Const.STREAMING_ASSETS = path;
-            
-                LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
-                LOGGER.Log(Level.CONFIG, "Initializing game");
-                LOGGER.Log(Level.CONFIG, "ON ELSE------------------------------------------------------------------------------------------------");
-                LOGGER.Log(Level.CONFIG, "Path established", new Param { Name = nameof(path), Value = path });
-                
-                DbContext.INSTANCE.Initialize();
-            
-                Injector.Initialize();
-            }
-
-            DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
-            LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
+            SetUpEnvironment();
             
             LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
             SetUpTestSpecific();
@@ -162,11 +131,26 @@ namespace Editor.Tests.TestCase
             LOGGER.Log(TestLevel.TEST, "============== " + testName + testStatus + "\n");
         }
 
-        protected virtual void OpenScene()
-        {
-            EditorSceneManager.OpenScene(BASE_SCENE_NAME);
-        }
+        protected abstract void OpenScene();
 
         protected abstract void SetUpTestSpecific();
+
+        private void SetUpEnvironment()
+        {
+            var path = Application.streamingAssetsPath + "/";
+
+            DbContext.INSTANCE.DatabaseType = Database.Test;
+            Const.STREAMING_ASSETS = path;
+        
+            LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
+            LOGGER.Log(Level.CONFIG, "Initializing game");
+            LOGGER.Log(Level.CONFIG, "Path established", new Param { Name = nameof(path), Value = path });
+            
+            DbContext.INSTANCE.Initialize();
+        
+            Injector.Initialize();
+
+            DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
+        }
     }
 }
