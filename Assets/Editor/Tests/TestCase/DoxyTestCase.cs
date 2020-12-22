@@ -6,6 +6,7 @@ using NUnit.Framework.Interfaces;
 using SbLogger;
 using ScotchBoardSQL;
 using UI.Impl;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Utils;
 using Utils.LogLevels;
@@ -32,20 +33,14 @@ namespace Editor.Tests.TestCase
         {
             OpenScene();
 
-            // dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
-            //
-            // if (dbTrigger == null)
-            // {
-            //     throw new NullReferenceException();
-            // }
-            DbContext.INSTANCE.DatabaseType = Database.Test;
-            Const.STREAMING_ASSETS = Application.streamingAssetsPath + "/";
+            dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
             
-            DbContext.INSTANCE.Initialize();
+            if (dbTrigger == null)
+            {
+                throw new NullReferenceException();
+            }
             
-            Injector.Initialize();
-            
-            // dbTrigger.TestAwake();
+            dbTrigger.TestAwake();
             DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
             LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
             
