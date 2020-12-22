@@ -7,7 +7,7 @@
         public static string STREAMING_ASSETS;
         
         private const string SQL_FOLDER = "SQL/";
-        private const string LOGS_FOLDER = "Logs/";
+        private const string LOGS_FOLDER = "Logss/";
 
         #endregion
 
