@@ -39,15 +39,21 @@ namespace Editor.Tests.TestCase
             //     throw new NullReferenceException();
             // }
             DbContext.INSTANCE.DatabaseType = Database.Test;
-            dbTrigger.TestAwake();
-            // DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
-            // LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
-            //
-            // LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
+            Const.STREAMING_ASSETS = Application.streamingAssetsPath + "/";
+            
+            DbContext.INSTANCE.Initialize();
+            
+            Injector.Initialize();
+            
+            // dbTrigger.TestAwake();
+            DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
+            LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
+            
+            LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
             // SetUpTestSpecific();
-            //
-            // LOGGER.Log(TestLevel.TEST, "==================================");
-            // LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
+            
+            LOGGER.Log(TestLevel.TEST, "==================================");
+            LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
         }
 
         [OneTimeTearDown]

@@ -29,20 +29,15 @@ namespace DataBase
         {
             string path;
 
-// #if UNITY_ANDROID
-//             path = "jar:file://" + Application.dataPath + "!/assets/";
-// #endif
-//             
-// #if UNITY_EDITOR || UNITY_STANDALONE
-//             path = Application.dataPath + "/StreamingAssets/";
-// #endif
-//
-// #if UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX
-//             path = Application.dataPath + "/Assets/StreamingAssets/";
-// #endif
-            path = Application.streamingAssetsPath + "/";
+#if UNITY_ANDROID
+            path = "jar:file://" + Application.dataPath + "!/assets/";
+#endif
             
-            // DbContext.INSTANCE.DatabaseType = Database.Test;
+#if UNITY_EDITOR || UNITY_STANDALONE
+            path = Application.streamingAssetsPath + "/";
+#endif
+
+            DbContext.INSTANCE.DatabaseType = databaseType;
             Const.STREAMING_ASSETS = path;
             
             LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
