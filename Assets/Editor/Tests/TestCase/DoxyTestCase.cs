@@ -50,7 +50,7 @@ namespace Editor.Tests.TestCase
             LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
             
             LOGGER.Log(TestLevel.TEST, "============== Setting up test specific");
-            // SetUpTestSpecific();
+            SetUpTestSpecific();
             
             LOGGER.Log(TestLevel.TEST, "==================================");
             LOGGER.Log(TestLevel.TEST, "============== Starting Test Suite " + TestContext.CurrentContext.Test.ClassName + "\n");
