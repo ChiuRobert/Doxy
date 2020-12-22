@@ -3,6 +3,7 @@ using System.Data;
 using Mono.Data.Sqlite;
 using SbLogger;
 using SbLogger.Levels;
+using UnityEngine;
 using Utils;
 using Utils.LogLevels;
 
@@ -47,7 +48,11 @@ namespace DataBase
             }
             catch (Exception e)
             {
-                LOGGER.Log(Level.SEVERE, "Error opening a database connection", e);
+                LOGGER.Log(Level.SEVERE, "Error opening a database connection: " + e.StackTrace + "\n---\n", e);
+                LOGGER.Log(Level.SEVERE, "-----------------------------------------------------");
+                LOGGER.Log(Level.SEVERE, "Exiting Application");
+                LOGGER.Log(Level.SEVERE, "-----------------------------------------------------");
+                Application.Quit();
             }
 
             LOGGER.Log(Level.CONFIG, "Connection to database established");

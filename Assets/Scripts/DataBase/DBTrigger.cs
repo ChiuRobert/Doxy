@@ -32,8 +32,8 @@ namespace DataBase
 #if UNITY_ANDROID
             path = "jar:file://" + Application.dataPath + "!/assets/";
 #endif
-
-#if UNITY_EDITOR
+            
+#if UNITY_EDITOR || UNITY_STANDALONE
             path = Application.dataPath + "/StreamingAssets/";
 #endif
 
