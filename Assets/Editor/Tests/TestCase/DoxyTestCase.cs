@@ -38,7 +38,7 @@ namespace Editor.Tests.TestCase
             // {
             //     throw new NullReferenceException();
             // }
-            
+            DbContext.INSTANCE.DatabaseType = Database.Test;
             dbTrigger.TestAwake();
             // DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
             // LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
