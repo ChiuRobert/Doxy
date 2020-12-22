@@ -8,6 +8,7 @@ using ScotchBoardSQL;
 using UI.Impl;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 using Utils.LogLevels;
 
@@ -15,6 +16,9 @@ namespace Editor.Tests.TestCase
 {
     public abstract class DoxyTestCase
     {
+        private const string BASE_SCENE_NAME = "Assets/Scenes/LanguageTestScene.unity";
+        private string[] Scenes = {"LanguageTestScene", "BaseWordTestScene", "DialectTestScene", "DictionaryTestScene"};
+        
         protected static SLogger LOGGER;
         
         protected LanguageActions LanguageActions;
@@ -138,7 +142,24 @@ namespace Editor.Tests.TestCase
             LOGGER.Log(TestLevel.TEST, "============== " + testName + testStatus + "\n");
         }
 
-        protected abstract void OpenScene();
+        protected virtual void OpenScene()
+        {
+            int nr = 0;
+            Scene currentScene = SceneManager.GetActiveScene();
+
+            foreach (string scene in Scenes)
+            {
+                if (currentScene.name.Equals(scene))
+                {
+                    nr++;
+                }
+            }
+
+            if (nr == 0)
+            {
+                EditorSceneManager.OpenScene(BASE_SCENE_NAME);
+            }
+        }
         protected abstract void SetUpTestSpecific();
     }
 }
