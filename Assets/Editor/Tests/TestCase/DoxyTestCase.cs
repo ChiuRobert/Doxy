@@ -4,6 +4,7 @@ using DataBase;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using SbLogger;
+using SbLogger.Levels;
 using ScotchBoardSQL;
 using UI.Impl;
 using UnityEditor.SceneManagement;
@@ -36,14 +37,34 @@ namespace Editor.Tests.TestCase
         {
             OpenScene();
 
-            dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
-            
-            if (dbTrigger == null)
+            if (SceneManager.GetActiveScene().name.Contains("Language"))
             {
-                throw new NullReferenceException();
+                dbTrigger = GameObject.Find("Actions").GetComponent<DbTrigger>();
+
+                if (dbTrigger == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                dbTrigger.TestAwake();
             }
+            else
+            {
+                string path = Application.streamingAssetsPath + "/";
+
+                DbContext.INSTANCE.DatabaseType = Database.Test;
+                Const.STREAMING_ASSETS = path;
             
-            dbTrigger.TestAwake();
+                LOGGER = SLogger.GetLogger(nameof(DbTrigger), FileService.GetLogPath());
+                LOGGER.Log(Level.CONFIG, "Initializing game");
+                LOGGER.Log(Level.CONFIG, "ON ELSE------------------------------------------------------------------------------------------------");
+                LOGGER.Log(Level.CONFIG, "Path established", new Param { Name = nameof(path), Value = path });
+                
+                DbContext.INSTANCE.Initialize();
+            
+                Injector.Initialize();
+            }
+
             DbContext.INSTANCE.ExecuteScript(FileService.ParseFile(FileService.CreateFullPath(Const.ADD_TEST_DATA)).ToString());
             LOGGER = SLogger.GetLogger(nameof(DoxyTestCase), FileService.GetLogPath());
             
