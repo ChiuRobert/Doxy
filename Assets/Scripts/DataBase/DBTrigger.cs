@@ -37,7 +37,7 @@ namespace DataBase
             path = Application.dataPath + "/StreamingAssets/";
 #endif
 
-#if UNITY_EDITOR_LINUX
+#if UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX
             path = Application.dataPath + "/Assets/StreamingAssets/";
 #endif
             
